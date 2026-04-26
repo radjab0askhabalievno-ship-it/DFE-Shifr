@@ -2,83 +2,213 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>DFE! Конвертер</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFE! Converter</title>
     <style>
+        :root {
+            --bg: #0d1117; --panel: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff;
+            --green: #3fb950; --red: #f85149; --yellow: #d2991d; --purple: #a371f7;
+            --font: 'Courier New', monospace;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Courier New', monospace; background: #0d1117; color: #c9d1d9; display: flex; justify-content: center; padding: 20px; }
-        .container { max-width: 860px; width: 100%; }
-        h1 { text-align: center; color: #58a6ff; margin-bottom: 4px; font-size: 30px; letter-spacing: 2px; }
-        .subtitle { text-align: center; color: #8b949e; margin-bottom: 20px; font-size: 13px; }
-        .panel { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 18px; margin-bottom: 14px; position: relative; }
-        .panel label { display: block; color: #8b949e; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .panel .copy-btn { position: absolute; top: 14px; right: 14px; background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-family: 'Courier New', monospace; transition: 0.2s; }
-        .panel .copy-btn:hover { background: #30363d; color: #58a6ff; border-color: #58a6ff; }
-        .panel .copy-btn.copied { color: #3fb950; border-color: #3fb950; }
-        textarea { width: 100%; height: 110px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; padding: 12px; font-family: 'Courier New', monospace; font-size: 14px; resize: vertical; outline: none; }
-        textarea:focus { border-color: #58a6ff; }
-        .row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-        .row button { flex: 1; min-width: 120px; padding: 12px; border: 1px solid #30363d; border-radius: 6px; background: #21262d; color: #c9d1d9; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: 'Courier New', monospace; }
-        .row button:hover { background: #30363d; border-color: #58a6ff; color: #58a6ff; }
-        .row button.accent { background: #1f6feb22; border-color: #58a6ff; color: #58a6ff; }
-        .error { color: #f85149; font-size: 12px; margin-top: 6px; min-height: 18px; }
-        .history { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; }
-        .history h3 { color: #8b949e; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
-        .history-list { max-height: 180px; overflow-y: auto; }
-        .history-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #21262d; font-size: 12px; gap: 12px; }
+        body { font-family: var(--font); background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 10px; min-height: 100vh; transition: all 0.3s; }
+        body.light { --bg: #ffffff; --panel: #f6f8fa; --border: #d0d7de; --text: #24292f; --accent: #0969da; --green: #1a7f37; --red: #cf222e; }
+        .container { max-width: 900px; width: 100%; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+        h1 { color: var(--accent); font-size: 26px; letter-spacing: 2px; cursor: pointer; user-select: none; }
+        h1:active { transform: scale(0.95); }
+        .header-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .header-btns button, .badge { padding: 5px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); color: var(--text); cursor: pointer; font-size: 11px; font-family: var(--font); transition: 0.2s; }
+        .header-btns button:hover { border-color: var(--accent); color: var(--accent); }
+        .badge { background: #1f6feb22; border-color: var(--accent); color: var(--accent); font-weight: bold; }
+        .subtitle { text-align: center; color: #8b949e; margin-bottom: 12px; font-size: 12px; }
+        /* Tabs */
+        .tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+        .tabs button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px 6px 0 0; background: var(--panel); color: var(--text); cursor: pointer; font-size: 12px; font-family: var(--font); transition: 0.2s; border-bottom: none; }
+        .tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        /* Panels */
+        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 10px; position: relative; }
+        .panel label { display: block; color: #8b949e; margin-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .panel .copy-btn, .panel .speak-btn { position: absolute; top: 12px; right: 12px; background: var(--panel); border: 1px solid var(--border); color: #8b949e; padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: var(--font); transition: 0.2s; }
+        .panel .speak-btn { right: 100px; }
+        .panel .copy-btn:hover, .panel .speak-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .panel .char-count { position: absolute; bottom: 8px; right: 14px; font-size: 10px; color: #484f58; }
+        textarea { width: 100%; height: 100px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 10px; font-family: var(--font); font-size: 13px; resize: vertical; outline: none; }
+        textarea:focus { border-color: var(--accent); }
+        .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .row button, .row select { flex: 1; min-width: 100px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: var(--font); }
+        .row button:hover, .row select:hover { border-color: var(--accent); color: var(--accent); }
+        .row button.accent { background: #1f6feb22; border-color: var(--accent); color: var(--accent); }
+        .row button.danger { color: var(--red); }
+        .row button.danger:hover { border-color: var(--red); background: #da363322; }
+        .error { color: var(--red); font-size: 11px; margin-top: 4px; min-height: 16px; }
+        /* History */
+        .history { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+        .history h3 { color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .history-list { max-height: 160px; overflow-y: auto; }
+        .history-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 11px; gap: 8px; }
         .history-item:last-child { border-bottom: none; }
-        .history-item .dir { color: #58a6ff; white-space: nowrap; min-width: 30px; font-weight: bold; }
-        .history-item .text { color: #c9d1d9; word-break: break-all; flex: 1; }
+        .history-item .dir { color: var(--accent); white-space: nowrap; min-width: 24px; font-weight: bold; }
+        .history-item .text { color: var(--text); word-break: break-all; flex: 1; }
         .history-item .text small { color: #8b949e; }
-        .history-item .use-btn { background: none; border: 1px solid #30363d; color: #8b949e; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 10px; font-family: 'Courier New', monospace; white-space: nowrap; }
-        .history-item .use-btn:hover { border-color: #58a6ff; color: #58a6ff; }
-        .clear-btn { margin-top: 8px; background: #21262d; border: 1px solid #30363d; color: #f85149; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 11px; font-family: 'Courier New', monospace; }
-        .clear-btn:hover { background: #da363322; }
-        .mode-indicator { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; margin-left: 6px; }
-        .mode-indicator.encode { background: #1f6feb22; color: #58a6ff; }
-        .mode-indicator.decode { background: #3fb95022; color: #3fb950; }
+        .history-item .use-btn, .history-item .del-btn { background: none; border: 1px solid var(--border); color: #8b949e; padding: 2px 6px; border-radius: 3px; cursor: pointer; font-size: 9px; font-family: var(--font); white-space: nowrap; margin-left: 4px; }
+        .history-item .use-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .history-item .del-btn:hover { border-color: var(--red); color: var(--red); }
+        /* Stats */
+        .stats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; font-size: 10px; color: #8b949e; }
+        .stats span { background: var(--panel); border: 1px solid var(--border); padding: 4px 10px; border-radius: 10px; }
+        /* Toast */
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; font-family: var(--font); }
+        .toast.show { opacity: 1; }
+        /* Animations */
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+        .shake { animation: shake 0.3s; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        .pulse { animation: pulse 0.6s; }
+        /* Mobile */
+        @media (max-width: 600px) {
+            h1 { font-size: 20px; }
+            textarea { height: 80px; font-size: 12px; }
+            .row button, .row select { padding: 8px; font-size: 10px; min-width: 70px; }
+            .tabs button { padding: 6px 10px; font-size: 10px; }
+            .panel { padding: 10px; }
+            .panel .copy-btn, .panel .speak-btn { top: 8px; right: 8px; padding: 2px 8px; font-size: 9px; }
+            .panel .speak-btn { right: 80px; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>⏁ DFE! ⏁</h1>
-    <div class="subtitle">Русский & Английский ↔ DFE! шифр <span id="modeBadge" class="mode-indicator encode">ШИФРОВАНИЕ</span></div>
-
-    <!-- Верхняя панель: обычный текст -->
-    <div class="panel">
-        <label>📥 ОБЫЧНЫЙ ТЕКСТ</label>
-        <button class="copy-btn" id="copyPlain">📋 Копировать</button>
-        <textarea id="plainInput" placeholder="Введи текст на русском или английском..."></textarea>
-        <div class="error" id="plainError"></div>
-    </div>
-
-    <!-- Кнопки -->
-    <div class="row">
-        <button id="btnEncode" class="accent">⬇ ЗАШИФРОВАТЬ</button>
-        <button id="btnDecode">⬆ РАСШИФРОВАТЬ</button>
-        <button id="btnSwap">🔄 ПОМЕНЯТЬ МЕСТАМИ</button>
-        <button id="btnClear">🗑 ОЧИСТИТЬ</button>
-    </div>
-
-    <!-- Нижняя панель: DFE! шифр -->
-    <div class="panel">
-        <label>📤 DFE! ШИФР</label>
-        <button class="copy-btn" id="copyDfe">📋 Копировать</button>
-        <textarea id="dfeOutput" placeholder="DFE! шифр..."></textarea>
-        <div class="error" id="dfeError"></div>
-    </div>
-
-    <!-- История -->
-    <div class="history">
-        <h3>📜 ИСТОРИЯ КОНВЕРТАЦИЙ</h3>
-        <div class="history-list" id="historyList">
-            <div style="color:#484f58; font-size:12px; padding:8px 0;">Пока пусто...</div>
+    <!-- Header -->
+    <div class="header">
+        <h1 id="logo" title="Click for Easter egg!">⏁ DFE! ⏁</h1>
+        <div class="header-btns">
+            <span class="badge" id="modeBadge">ENCRYPT</span>
+            <button id="btnExport" title="Export settings">💾 Export</button>
+            <button id="btnImport" title="Import settings">📥 Import</button>
+            <button id="btnTheme" title="Toggle theme">🌓 Theme</button>
+            <button id="btnLang" title="Switch language">🌐 RU</button>
         </div>
-        <button class="clear-btn" id="clearHistory">🗑 Очистить историю</button>
+    </div>
+    <div class="subtitle" id="subtitle">Russian & English ↔ DFE! cipher</div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="active" data-tab="converter">🔄 Converter</button>
+        <button data-tab="learn">📖 Learn DFE!</button>
+        <button data-tab="tools">🛠 Tools</button>
+        <button data-tab="about">ℹ️ About</button>
+    </div>
+
+    <!-- Tab 1: Converter -->
+    <div class="tab-content active" id="tab-converter">
+        <div class="panel">
+            <label id="lblPlain">📥 PLAIN TEXT</label>
+            <button class="copy-btn" id="copyPlain">📋 Copy</button>
+            <button class="speak-btn" id="speakPlain">🔊 Speak</button>
+            <textarea id="plainInput" placeholder="Enter Russian or English text..."></textarea>
+            <div class="char-count" id="countPlain">0 chars</div>
+            <div class="error" id="plainError"></div>
+        </div>
+        <div class="row">
+            <button id="btnEncode" class="accent">⬇ ENCRYPT</button>
+            <button id="btnDecode">⬆ DECRYPT</button>
+            <button id="btnSwap">🔄 SWAP</button>
+            <button id="btnClear">🗑 CLEAR</button>
+            <button id="btnRandom">🎲 Random</button>
+            <button id="btnReverse">↩ Reverse</button>
+        </div>
+        <div class="panel">
+            <label id="lblDfe">📤 DFE! CIPHER</label>
+            <button class="copy-btn" id="copyDfe">📋 Copy</button>
+            <button class="speak-btn" id="speakDfe">🔊 Speak</button>
+            <textarea id="dfeOutput" placeholder="DFE! cipher..."></textarea>
+            <div class="char-count" id="countDfe">0 chars</div>
+            <div class="error" id="dfeError"></div>
+        </div>
+        <div class="stats">
+            <span id="statEncrypted">🔒 Encrypted: 0</span>
+            <span id="statDecrypted">🔓 Decrypted: 0</span>
+            <span id="statChars">📝 Total chars: 0</span>
+            <span id="statUptime">⏱ Uptime: 0s</span>
+        </div>
+    </div>
+
+    <!-- Tab 2: Learn DFE! -->
+    <div class="tab-content" id="tab-learn">
+        <div class="panel">
+            <label>📖 DFE! ALPHABET</label>
+            <div id="alphabetTable" style="font-size:11px; line-height:1.8; max-height:300px; overflow-y:auto;"></div>
+        </div>
+        <div class="row">
+            <button id="btnQuiz">🧠 Start Quiz</button>
+            <button id="btnFlashcards">🃏 Flashcards</button>
+        </div>
+        <div id="quizArea" style="display:none;" class="panel"></div>
+    </div>
+
+    <!-- Tab 3: Tools -->
+    <div class="tab-content" id="tab-tools">
+        <div class="panel">
+            <label>🔢 BULK CONVERT</label>
+            <textarea id="bulkInput" placeholder="One word per line..." style="height:80px;"></textarea>
+            <div class="row" style="margin-top:8px;">
+                <button id="btnBulkEncode">⬇ Encrypt All</button>
+                <button id="btnBulkDecode">⬆ Decrypt All</button>
+            </div>
+            <textarea id="bulkOutput" placeholder="Result..." style="height:80px; margin-top:8px;" readonly></textarea>
+        </div>
+        <div class="panel">
+            <label>🔑 CUSTOM CODE</label>
+            <div class="row">
+                <input type="text" id="customChar" placeholder="Char" style="flex:1; padding:8px; background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:var(--font); border-radius:4px;">
+                <input type="text" id="customCode" placeholder="Code" style="flex:2; padding:8px; background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:var(--font); border-radius:4px;">
+                <button id="btnAddCustom">➕ Add</button>
+            </div>
+            <div id="customList" style="font-size:10px; margin-top:6px; color:#8b949e;"></div>
+        </div>
+    </div>
+
+    <!-- Tab 4: About -->
+    <div class="tab-content" id="tab-about">
+        <div class="panel">
+            <label>ℹ️ ABOUT DFE!</label>
+            <p style="font-size:12px; line-height:1.6;">
+                DFE! is a custom cipher created for fun and learning. It encodes Russian and English letters, digits, and symbols into unique character sequences.
+                <br><br>
+                <b>Version:</b> 2.0<br>
+                <b>Author:</b> radjab<br>
+                <b>License:</b> MIT<br>
+                <b>GitHub:</b> <a href="https://github.com/radjab0askhabalievno-ship-it/DFE-Shifr" style="color:var(--accent);">DFE-Shifr</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- History -->
+    <div class="history">
+        <h3>📜 HISTORY <span id="historyCount">0 items</span></h3>
+        <div class="history-list" id="historyList">
+            <div style="color:#484f58; font-size:11px; padding:6px 0;">Empty...</div>
+        </div>
+        <div class="row" style="margin-top:8px;">
+            <button id="clearHistory" class="danger">🗑 Clear History</button>
+            <button id="btnSaveHistory">💾 Save History</button>
+            <button id="btnLoadHistory">📥 Load History</button>
+        </div>
     </div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Hidden file input for import -->
+<input type="file" id="fileInput" style="display:none;" accept=".json">
+
 <script>
-    // ==================== СЛОВАРИ DFE! ====================
+    // ==================== DFE! DICTIONARIES ====================
     const ruToDfe = {
         'А':'$r','Б':'&f^','В':'<&g','Г':'$4F','Д':'@rD','Е':'*$r','Ж':'&^:%r','З':'^%$#r','И':'$№f','Й':'&$^r',
         'К':'^:%r','Л':'&/h','М':'#@Tr','Н':'^%H','О':'%J*','П':'&^YrE','Р':'**&r','С':'$#C','Т':'*(P^','У':'^%f',
@@ -90,49 +220,132 @@
         'J':'**&$^r','K':'**^:%r','L':'**&/h','M':'**#@Tr','N':'**^%H','O':'**%J*','P':'**&^YrE','Q':'****&r','R':'**$#C',
         'S':'***(P^','T':'**^%f','U':'**^:;"&r','V':'**^&^:rG','W':'**#@%rG','X':'**$:;rt','Y':'***I&^','Z':'***&%^:T'
     };
-    const digitsToDfe = {};
+    let digitsToDfe = {};
     for (let i = 0; i <= 9; i++) digitsToDfe[String(i)] = `-)${i}`;
-    const symbolsToDfe = {
+    let symbolsToDfe = {
         ',':'.-','!':'=+-','+':'--._-','?':'-.,-=','"':'_)-:r','_':'%$*@t',"'":'(&(%$r','@':'<^%','.':')_-.',' ':' '
     };
-    const allToDfe = {...ruToDfe, ...enToDfe, ...digitsToDfe, ...symbolsToDfe};
-    const dfeToChar = {};
-    for (const [char, code] of Object.entries(allToDfe)) dfeToChar[code] = char;
-    const sortedCodes = Object.keys(dfeToChar).sort((a,b) => b.length - a.length);
+    let allToDfe = {...ruToDfe, ...enToDfe, ...digitsToDfe, ...symbolsToDfe};
+    let dfeToChar = {};
+    let sortedCodes = [];
+    function rebuildDicts() {
+        allToDfe = {...ruToDfe, ...enToDfe, ...digitsToDfe, ...symbolsToDfe};
+        dfeToChar = {};
+        for (const [char, code] of Object.entries(allToDfe)) dfeToChar[code] = char;
+        sortedCodes = Object.keys(dfeToChar).sort((a,b) => b.length - a.length);
+    }
+    rebuildDicts();
 
-    // ==================== ЭЛЕМЕНТЫ ====================
+    // ==================== STATE ====================
+    let currentMode = 'encode';
+    let history = [];
+    let stats = { encrypted: 0, decrypted: 0, totalChars: 0 };
+    let lang = 'en';
+    let theme = 'dark';
+    let startTime = Date.now();
+    let quizData = null;
+
+    // ==================== I18N ====================
+    const i18n = {
+        en: {
+            subtitle: 'Russian & English ↔ DFE! cipher',
+            lblPlain: '📥 PLAIN TEXT',
+            lblDfe: '📤 DFE! CIPHER',
+            placeholderPlain: 'Enter Russian or English text...',
+            placeholderDfe: 'DFE! cipher...',
+            btnEncode: '⬇ ENCRYPT',
+            btnDecode: '⬆ DECRYPT',
+            btnSwap: '🔄 SWAP',
+            btnClear: '🗑 CLEAR',
+            btnRandom: '🎲 Random',
+            btnReverse: '↩ Reverse',
+            modeEncrypt: 'ENCRYPT',
+            modeDecrypt: 'DECRYPT',
+            historyEmpty: 'Empty...',
+            statEncrypted: '🔒 Encrypted: ',
+            statDecrypted: '🔓 Decrypted: ',
+            statChars: '📝 Total chars: ',
+            unknownChar: 'Unknown symbol: ',
+            errorNear: 'Error near: ',
+            enterText: 'Enter text to encrypt',
+            enterCipher: 'Enter DFE! cipher to decrypt',
+            copied: '✅ Copied!',
+            copy: '📋 Copy',
+            quizQuestion: 'What is the DFE! code for: ',
+            quizCorrect: '✅ Correct!',
+            quizWrong: '❌ Wrong! Correct: ',
+            bulkResult: 'Bulk result:',
+        },
+        ru: {
+            subtitle: 'Русский & Английский ↔ DFE! шифр',
+            lblPlain: '📥 ОБЫЧНЫЙ ТЕКСТ',
+            lblDfe: '📤 DFE! ШИФР',
+            placeholderPlain: 'Введи текст на русском или английском...',
+            placeholderDfe: 'DFE! шифр...',
+            btnEncode: '⬇ ЗАШИФРОВАТЬ',
+            btnDecode: '⬆ РАСШИФРОВАТЬ',
+            btnSwap: '🔄 ПОМЕНЯТЬ',
+            btnClear: '🗑 ОЧИСТИТЬ',
+            btnRandom: '🎲 Случайно',
+            btnReverse: '↩ Обратно',
+            modeEncrypt: 'ШИФРОВАНИЕ',
+            modeDecrypt: 'РАСШИФРОВКА',
+            historyEmpty: 'Пусто...',
+            statEncrypted: '🔒 Зашифровано: ',
+            statDecrypted: '🔓 Расшифровано: ',
+            statChars: '📝 Всего символов: ',
+            unknownChar: 'Неизвестный символ: ',
+            errorNear: 'Ошибка возле: ',
+            enterText: 'Введи текст для шифрования',
+            enterCipher: 'Введи DFE! шифр для расшифровки',
+            copied: '✅ Скопировано!',
+            copy: '📋 Копировать',
+            quizQuestion: 'Какой DFE! код для: ',
+            quizCorrect: '✅ Правильно!',
+            quizWrong: '❌ Неправильно! Правильно: ',
+            bulkResult: 'Результат:',
+        }
+    };
+    function t(key) { return (i18n[lang] && i18n[lang][key]) || (i18n['en'][key]) || key; }
+
+    // ==================== DOM ELEMENTS ====================
     const plainInput = document.getElementById('plainInput');
     const dfeOutput = document.getElementById('dfeOutput');
     const plainError = document.getElementById('plainError');
     const dfeError = document.getElementById('dfeError');
     const modeBadge = document.getElementById('modeBadge');
     const historyList = document.getElementById('historyList');
+    const toast = document.getElementById('toast');
+    const fileInput = document.getElementById('fileInput');
 
-    let currentMode = 'encode'; // 'encode' | 'decode'
-    let history = [];
+    // ==================== TOAST ====================
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    }
 
+    // ==================== MODE ====================
     function setMode(mode) {
         currentMode = mode;
         if (mode === 'encode') {
             document.getElementById('btnEncode').classList.add('accent');
             document.getElementById('btnDecode').classList.remove('accent');
-            modeBadge.textContent = 'ШИФРОВАНИЕ';
-            modeBadge.className = 'mode-indicator encode';
+            modeBadge.textContent = t('modeEncrypt');
         } else {
             document.getElementById('btnDecode').classList.add('accent');
             document.getElementById('btnEncode').classList.remove('accent');
-            modeBadge.textContent = 'РАСШИФРОВКА';
-            modeBadge.className = 'mode-indicator decode';
+            modeBadge.textContent = t('modeDecrypt');
         }
     }
 
-    // ==================== КОДИРОВАНИЕ / ДЕКОДИРОВАНИЕ ====================
+    // ==================== ENCODE / DECODE ====================
     function encode(text) {
         const upper = text.toUpperCase();
         let result = '';
         for (const ch of upper) {
             if (allToDfe[ch] !== undefined) result += allToDfe[ch];
-            else return { error: `Неизвестный символ: "${ch}"` };
+            else return { error: t('unknownChar') + `"${ch}"` };
         }
         return { result };
     }
@@ -154,7 +367,7 @@
             }
             if (!matched) {
                 const bad = remaining.length > 10 ? remaining.slice(0,10)+'…' : remaining;
-                return { error: `Ошибка возле: "${bad}"` };
+                return { error: t('errorNear') + `"${bad}"` };
             }
         }
         return { result };
@@ -165,31 +378,45 @@
         dfeError.textContent = '';
         if (currentMode === 'encode') {
             const text = plainInput.value;
-            if (!text.trim()) { plainError.textContent = 'Введи текст для шифрования'; return null; }
+            if (!text.trim()) { plainError.textContent = t('enterText'); return null; }
             const res = encode(text);
             if (res.error) { plainError.textContent = res.error; dfeOutput.value = ''; return null; }
             dfeOutput.value = res.result;
+            stats.encrypted++; stats.totalChars += text.length;
+            updateStats();
             return { dir: '→', from: text, to: res.result };
         } else {
             const text = dfeOutput.value;
-            if (!text.trim()) { dfeError.textContent = 'Введи DFE! шифр для расшифровки'; return null; }
+            if (!text.trim()) { dfeError.textContent = t('enterCipher'); return null; }
             const res = decode(text);
             if (res.error) { dfeError.textContent = res.error; plainInput.value = ''; return null; }
             plainInput.value = res.result;
+            stats.decrypted++; stats.totalChars += res.result.length;
+            updateStats();
             return { dir: '←', from: text, to: res.result };
         }
     }
 
-    // ==================== АВТО-КОНВЕРТАЦИЯ НА ЛЕТУ ====================
+    function updateStats() {
+        document.getElementById('statEncrypted').textContent = t('statEncrypted') + stats.encrypted;
+        document.getElementById('statDecrypted').textContent = t('statDecrypted') + stats.decrypted;
+        document.getElementById('statChars').textContent = t('statChars') + stats.totalChars;
+    }
+
+    // Uptime
+    setInterval(() => {
+        const uptime = Math.floor((Date.now() - startTime) / 1000);
+        const m = Math.floor(uptime / 60); const s = uptime % 60;
+        document.getElementById('statUptime').textContent = `⏱ Uptime: ${m}m ${s}s`;
+    }, 1000);
+
+    // ==================== AUTO-CONVERT ====================
     let autoTimer;
     function autoConvert() {
         clearTimeout(autoTimer);
         autoTimer = setTimeout(() => {
-            if (currentMode === 'encode' && plainInput.value.trim()) {
-                performConversionAndAddHistory();
-            } else if (currentMode === 'decode' && dfeOutput.value.trim()) {
-                performConversionAndAddHistory();
-            }
+            if (currentMode === 'encode' && plainInput.value.trim()) performConversionAndAddHistory();
+            else if (currentMode === 'decode' && dfeOutput.value.trim()) performConversionAndAddHistory();
         }, 400);
     }
 
@@ -198,51 +425,50 @@
         if (res) addHistory(res);
     }
 
-    // ==================== ИСТОРИЯ ====================
+    // ==================== HISTORY ====================
     function addHistory(entry) {
-        // Убираем дубли подряд
         if (history.length > 0 && history[0].from === entry.from && history[0].to === entry.to) return;
-        history.unshift(entry);
-        if (history.length > 30) history.pop();
+        history.unshift({...entry, time: new Date().toLocaleTimeString()});
+        if (history.length > 50) history.pop();
         renderHistory();
-        localStorage.setItem('dfeHistory', JSON.stringify(history));
+        saveHistoryToLocal();
     }
 
     function renderHistory() {
+        document.getElementById('historyCount').textContent = history.length + ' items';
         if (history.length === 0) {
-            historyList.innerHTML = '<div style="color:#484f58; font-size:12px; padding:8px 0;">Пока пусто...</div>';
+            historyList.innerHTML = `<div style="color:#484f58; font-size:11px; padding:6px 0;">${t('historyEmpty')}</div>`;
             return;
         }
         historyList.innerHTML = history.map((h,i) => `
             <div class="history-item">
                 <span class="dir">${h.dir}</span>
-                <span class="text"><small>из:</small> ${escapeHtml(h.from.length > 40 ? h.from.slice(0,40)+'…' : h.from)}<br><small>в:</small> ${escapeHtml(h.to.length > 40 ? h.to.slice(0,40)+'…' : h.to)}</span>
+                <span class="text"><small>${h.time}</small> ${escapeHtml(h.from.length > 30 ? h.from.slice(0,30)+'…' : h.from)} → ${escapeHtml(h.to.length > 30 ? h.to.slice(0,30)+'…' : h.to)}</span>
                 <button class="use-btn" data-index="${i}">↩</button>
+                <button class="del-btn" data-index="${i}">✕</button>
             </div>
         `).join('');
-        // Кнопки "использовать"
         document.querySelectorAll('.use-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const idx = parseInt(e.target.dataset.index);
-                const entry = history[idx];
-                if (entry.dir === '→') {
-                    plainInput.value = entry.from;
-                    dfeOutput.value = entry.to;
-                } else {
-                    dfeOutput.value = entry.from;
-                    plainInput.value = entry.to;
-                }
+                const entry = history[parseInt(e.target.dataset.index)];
+                if (entry.dir === '→') { plainInput.value = entry.from; dfeOutput.value = entry.to; }
+                else { dfeOutput.value = entry.from; plainInput.value = entry.to; }
+            });
+        });
+        document.querySelectorAll('.del-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                history.splice(parseInt(e.target.dataset.index), 1);
+                renderHistory();
+                saveHistoryToLocal();
             });
         });
     }
 
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
+    function saveHistoryToLocal() {
+        try { localStorage.setItem('dfeHistory', JSON.stringify(history)); } catch(e) {}
     }
 
-    function loadHistory() {
+    function loadHistoryFromLocal() {
         try {
             const saved = localStorage.getItem('dfeHistory');
             if (saved) history = JSON.parse(saved);
@@ -250,63 +476,346 @@
         } catch(e) {}
     }
 
-    // ==================== КНОПКИ КОПИРОВАНИЯ ====================
+    // ==================== COPY ====================
     function copyToClipboard(text, btn) {
         navigator.clipboard.writeText(text).then(() => {
-            btn.textContent = '✅ Скопировано!';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.textContent = '📋 Копировать';
-                btn.classList.remove('copied');
-            }, 1500);
+            btn.textContent = t('copied');
+            setTimeout(() => { btn.textContent = t('copy'); }, 1500);
+            showToast(t('copied'));
         });
     }
 
-    // ==================== ОБРАБОТЧИКИ ====================
-    document.getElementById('btnEncode').addEventListener('click', () => {
-        setMode('encode');
-        performConversionAndAddHistory();
-    });
-    document.getElementById('btnDecode').addEventListener('click', () => {
-        setMode('decode');
-        performConversionAndAddHistory();
-    });
-    document.getElementById('btnSwap').addEventListener('click', () => {
-        const plain = plainInput.value;
-        const dfe = dfeOutput.value;
-        plainInput.value = dfe;
-        dfeOutput.value = plain;
-        plainError.textContent = '';
-        dfeError.textContent = '';
-    });
-    document.getElementById('btnClear').addEventListener('click', () => {
-        plainInput.value = '';
-        dfeOutput.value = '';
-        plainError.textContent = '';
-        dfeError.textContent = '';
-    });
-    document.getElementById('copyPlain').addEventListener('click', () => copyToClipboard(plainInput.value, document.getElementById('copyPlain')));
-    document.getElementById('copyDfe').addEventListener('click', () => copyToClipboard(dfeOutput.value, document.getElementById('copyDfe')));
-    document.getElementById('clearHistory').addEventListener('click', () => {
-        history = [];
-        localStorage.removeItem('dfeHistory');
-        renderHistory();
+    // ==================== SPEAK ====================
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = lang === 'ru' ? 'ru-RU' : 'en-US';
+            utter.rate = 0.9;
+            speechSynthesis.cancel();
+            speechSynthesis.speak(utter);
+        }
+    }
+
+    // ==================== RANDOM TEXT ====================
+    function randomText() {
+        const words = ['ПРИВЕТ','HELLO','DFE','ШИФР','CIPHER','КОНВЕРТЕР','CONVERTER','АЗБУКА','MORSE','КОД','SECRET','ТАЙНА','ХАХА','LOL'];
+        return words[Math.floor(Math.random() * words.length)];
+    }
+
+    // ==================== REVERSE ====================
+    function reverseCode(text) {
+        // Reverse character by character in DFE! format
+        if (currentMode === 'encode') {
+            const codes = [];
+            for (const ch of text.toUpperCase()) {
+                if (allToDfe[ch]) codes.push(allToDfe[ch]);
+            }
+            return codes.reverse().join('');
+        }
+        return text.split('').reverse().join('');
+    }
+
+    // ==================== QUIZ ====================
+    function startQuiz() {
+        const allChars = Object.keys(allToDfe).filter(c => c !== ' ' && c.length === 1);
+        const randomChar = allChars[Math.floor(Math.random() * allChars.length)];
+        const correctCode = allToDfe[randomChar];
+        quizData = { char: randomChar, code: correctCode };
+        const quizArea = document.getElementById('quizArea');
+        quizArea.style.display = 'block';
+        quizArea.innerHTML = `
+            <label>${t('quizQuestion')} <b style="font-size:24px; color:var(--accent);">${randomChar}</b></label>
+            <input type="text" id="quizAnswer" placeholder="Enter DFE! code..." style="width:100%; padding:10px; background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:var(--font); border-radius:4px; margin-top:8px;">
+            <div class="row" style="margin-top:8px;">
+                <button id="btnQuizSubmit">✅ Submit</button>
+                <button id="btnQuizHint">💡 Hint</button>
+                <button id="btnQuizNext">⏭ Next</button>
+            </div>
+            <div id="quizFeedback" style="margin-top:6px; font-size:12px;"></div>
+        `;
+        document.getElementById('btnQuizSubmit').addEventListener('click', () => {
+            const answer = document.getElementById('quizAnswer').value.trim();
+            const fb = document.getElementById('quizFeedback');
+            if (answer === correctCode) { fb.innerHTML = `<span style="color:var(--green);">${t('quizCorrect')}</span>`; }
+            else { fb.innerHTML = `<span style="color:var(--red);">${t('quizWrong')} ${correctCode}</span>`; document.getElementById('quizAnswer').classList.add('shake'); setTimeout(() => document.getElementById('quizAnswer').classList.remove('shake'), 300); }
+        });
+        document.getElementById('btnQuizHint').addEventListener('click', () => {
+            document.getElementById('quizFeedback').innerHTML = `<span style="color:var(--yellow);">Hint: ${correctCode.slice(0,2)}...</span>`;
+        });
+        document.getElementById('btnQuizNext').addEventListener('click', startQuiz);
+    }
+
+    // ==================== FLASHCARDS ====================
+    function showFlashcards() {
+        const chars = Object.entries(allToDfe).filter(([c]) => c !== ' ' && c.length === 1);
+        const shuffled = chars.sort(() => Math.random() - 0.5).slice(0, 10);
+        const quizArea = document.getElementById('quizArea');
+        quizArea.style.display = 'block';
+        quizArea.innerHTML = '<div id="flashcardContainer"></div><button id="btnFlipAll" style="margin-top:8px; padding:8px 16px; background:var(--panel); border:1px solid var(--border); color:var(--text); border-radius:4px; cursor:pointer; font-family:var(--font);">🔄 Flip All</button>';
+        const container = document.getElementById('flashcardContainer');
+        shuffled.forEach(([char, code]) => {
+            const card = document.createElement('div');
+            card.style.cssText = 'display:inline-block; margin:4px; padding:10px 14px; background:var(--panel); border:1px solid var(--border); border-radius:6px; cursor:pointer; text-align:center; min-width:60px; transition:0.3s;';
+            card.innerHTML = `<b>${char}</b>`;
+            card.dataset.code = code;
+            card.dataset.flipped = 'false';
+            card.addEventListener('click', () => {
+                if (card.dataset.flipped === 'false') { card.innerHTML = `<span style="color:var(--accent);">${code}</span>`; card.dataset.flipped = 'true'; }
+                else { card.innerHTML = `<b>${char}</b>`; card.dataset.flipped = 'false'; }
+            });
+            container.appendChild(card);
+        });
+        document.getElementById('btnFlipAll').addEventListener('click', () => {
+            document.querySelectorAll('#flashcardContainer div').forEach(c => c.click());
+        });
+    }
+
+    // ==================== BULK CONVERT ====================
+    function bulkConvert(direction) {
+        const input = document.getElementById('bulkInput').value.split('\n').filter(l => l.trim());
+        const output = input.map(line => {
+            if (direction === 'encode') {
+                const res = encode(line.trim());
+                return res.error ? `ERR: ${res.error}` : res.result;
+            } else {
+                const res = decode(line.trim());
+                return res.error ? `ERR: ${res.error}` : res.result;
+            }
+        });
+        document.getElementById('bulkOutput').value = output.join('\n');
+    }
+
+    // ==================== CUSTOM CODE ====================
+    function addCustomCode() {
+        const char = document.getElementById('customChar').value.trim().toUpperCase();
+        const code = document.getElementById('customCode').value.trim();
+        if (!char || !code) return showToast('Enter both char and code');
+        if (char.length !== 1) return showToast('Char must be 1 symbol');
+        symbolsToDfe[char] = code;
+        rebuildDicts();
+        renderCustomList();
+        showToast(`Added: ${char} → ${code}`);
+    }
+
+    function renderCustomList() {
+        const list = document.getElementById('customList');
+        const customs = Object.entries(symbolsToDfe);
+        if (customs.length === 0) { list.textContent = 'No custom codes'; return; }
+        list.innerHTML = customs.map(([c,cd]) => `<span style="display:inline-block; margin:2px 4px; background:var(--panel); padding:2px 8px; border-radius:8px; border:1px solid var(--border);">${c}→${cd} <button onclick="deleteCustom('${c}')" style="background:none; border:none; color:var(--red); cursor:pointer;">✕</button></span>`).join('');
+    }
+
+    function deleteCustom(char) {
+        delete symbolsToDfe[char];
+        rebuildDicts();
+        renderCustomList();
+        showToast(`Removed: ${char}`);
+    }
+
+    // ==================== EXPORT / IMPORT ====================
+    function exportSettings() {
+        const data = { ruToDfe, enToDfe, digitsToDfe, symbolsToDfe, history, stats, lang, theme };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dfe-settings.json'; a.click();
+        showToast('Settings exported!');
+    }
+
+    function importSettings() {
+        fileInput.click();
+    }
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (data.ruToDfe) Object.assign(ruToDfe, data.ruToDfe);
+                if (data.enToDfe) Object.assign(enToDfe, data.enToDfe);
+                if (data.digitsToDfe) digitsToDfe = data.digitsToDfe;
+                if (data.symbolsToDfe) symbolsToDfe = data.symbolsToDfe;
+                if (data.history) { history = data.history; renderHistory(); }
+                if (data.stats) stats = data.stats;
+                if (data.lang) { lang = data.lang; updateLanguage(); }
+                if (data.theme) { theme = data.theme; applyTheme(); }
+                rebuildDicts();
+                updateStats();
+                renderCustomList();
+                showToast('Settings imported!');
+            } catch(ex) { showToast('Invalid file!'); }
+        };
+        reader.readAsText(file);
+        fileInput.value = '';
     });
 
-    // Авто-конвертация при вводе
+    // ==================== THEME ====================
+    function applyTheme() {
+        document.body.classList.toggle('light', theme === 'light');
+        document.getElementById('btnTheme').textContent = theme === 'dark' ? '🌙 Dark' : '☀️ Light';
+    }
+
+    function toggleTheme() {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        applyTheme();
+        try { localStorage.setItem('dfeTheme', theme); } catch(e) {}
+    }
+
+    // ==================== LANGUAGE ====================
+    function updateLanguage() {
+        document.getElementById('subtitle').textContent = t('subtitle');
+        document.getElementById('lblPlain').textContent = t('lblPlain');
+        document.getElementById('lblDfe').textContent = t('lblDfe');
+        plainInput.placeholder = t('placeholderPlain');
+        dfeOutput.placeholder = t('placeholderDfe');
+        document.getElementById('btnEncode').textContent = t('btnEncode');
+        document.getElementById('btnDecode').textContent = t('btnDecode');
+        document.getElementById('btnSwap').textContent = t('btnSwap');
+        document.getElementById('btnClear').textContent = t('btnClear');
+        document.getElementById('btnRandom').textContent = t('btnRandom');
+        document.getElementById('btnReverse').textContent = t('btnReverse');
+        if (currentMode === 'encode') modeBadge.textContent = t('modeEncrypt');
+        else modeBadge.textContent = t('modeDecrypt');
+        document.getElementById('btnLang').textContent = lang === 'en' ? '🌐 RU' : '🌐 EN';
+        updateStats();
+        renderHistory();
+        document.getElementById('copyPlain').textContent = t('copy');
+        document.getElementById('copyDfe').textContent = t('copy');
+    }
+
+    function toggleLanguage() {
+        lang = lang === 'en' ? 'ru' : 'en';
+        updateLanguage();
+        try { localStorage.setItem('dfeLang', lang); } catch(e) {}
+    }
+
+    // ==================== TABS ====================
+    document.querySelectorAll('.tabs button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            if (btn.dataset.tab === 'learn') renderAlphabet();
+        });
+    });
+
+    function renderAlphabet() {
+        const table = document.getElementById('alphabetTable');
+        let html = '<b>RU:</b><br>';
+        for (const [ch, cd] of Object.entries(ruToDfe)) html += `<span style="margin:2px 4px;">${ch}→${cd}</span> `;
+        html += '<br><br><b>EN:</b><br>';
+        for (const [ch, cd] of Object.entries(enToDfe)) html += `<span style="margin:2px 4px;">${ch}→${cd}</span> `;
+        html += '<br><br><b>DIGITS:</b><br>';
+        for (const [ch, cd] of Object.entries(digitsToDfe)) html += `<span style="margin:2px 4px;">${ch}→${cd}</span> `;
+        html += '<br><br><b>SYMBOLS:</b><br>';
+        for (const [ch, cd] of Object.entries(symbolsToDfe)) html += `<span style="margin:2px 4px;">${escapeHtml(ch)}→${cd}</span> `;
+        table.innerHTML = html;
+    }
+
+    // ==================== CHARACTER COUNT ====================
     plainInput.addEventListener('input', () => {
+        document.getElementById('countPlain').textContent = plainInput.value.length + ' chars';
         if (currentMode === 'encode') autoConvert();
     });
     dfeOutput.addEventListener('input', () => {
+        document.getElementById('countDfe').textContent = dfeOutput.value.length + ' chars';
         if (currentMode === 'decode') autoConvert();
     });
+
+    // ==================== EASTER EGG ====================
+    let logoClicks = 0;
+    document.getElementById('logo').addEventListener('click', () => {
+        logoClicks++;
+        if (logoClicks >= 5) {
+            document.body.classList.add('pulse');
+            setTimeout(() => document.body.classList.remove('pulse'), 600);
+            showToast('🕵️ DFE! SECRET MODE ACTIVATED!');
+            logoClicks = 0;
+        }
+    });
+
+    // ==================== EVENT HANDLERS ====================
+    document.getElementById('btnEncode').addEventListener('click', () => { setMode('encode'); performConversionAndAddHistory(); });
+    document.getElementById('btnDecode').addEventListener('click', () => { setMode('decode'); performConversionAndAddHistory(); });
+    document.getElementById('btnSwap').addEventListener('click', () => {
+        [plainInput.value, dfeOutput.value] = [dfeOutput.value, plainInput.value];
+        plainError.textContent = ''; dfeError.textContent = '';
+        document.getElementById('countPlain').textContent = plainInput.value.length + ' chars';
+        document.getElementById('countDfe').textContent = dfeOutput.value.length + ' chars';
+    });
+    document.getElementById('btnClear').addEventListener('click', () => {
+        plainInput.value = ''; dfeOutput.value = '';
+        plainError.textContent = ''; dfeError.textContent = '';
+        document.getElementById('countPlain').textContent = '0 chars';
+        document.getElementById('countDfe').textContent = '0 chars';
+    });
+    document.getElementById('btnRandom').addEventListener('click', () => {
+        if (currentMode === 'encode') plainInput.value = randomText();
+        else dfeOutput.value = encode(randomText()).result;
+        performConversionAndAddHistory();
+    });
+    document.getElementById('btnReverse').addEventListener('click', () => {
+        if (currentMode === 'encode') {
+            const rev = reverseCode(plainInput.value);
+            dfeOutput.value = rev;
+        } else {
+            plainInput.value = dfeOutput.value.split('').reverse().join('');
+        }
+        performConversionAndAddHistory();
+    });
+    document.getElementById('copyPlain').addEventListener('click', () => copyToClipboard(plainInput.value, document.getElementById('copyPlain')));
+    document.getElementById('copyDfe').addEventListener('click', () => copyToClipboard(dfeOutput.value, document.getElementById('copyDfe')));
+    document.getElementById('speakPlain').addEventListener('click', () => speak(plainInput.value));
+    document.getElementById('speakDfe').addEventListener('click', () => speak(dfeOutput.value));
+    document.getElementById('clearHistory').addEventListener('click', () => { history = []; renderHistory(); saveHistoryToLocal(); showToast('History cleared!'); });
+    document.getElementById('btnSaveHistory').addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(history, null, 2)], {type: 'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dfe-history.json'; a.click();
+    });
+    document.getElementById('btnLoadHistory').addEventListener('click', () => {
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try { history = JSON.parse(ev.target.result); renderHistory(); saveHistoryToLocal(); showToast('History loaded!'); } catch(ex) { showToast('Invalid file!'); }
+            };
+            reader.readAsText(file);
+            fileInput.value = '';
+        };
+        fileInput.accept = '.json';
+        fileInput.click();
+        fileInput.accept = '.json';
+    });
+    document.getElementById('btnTheme').addEventListener('click', toggleTheme);
+    document.getElementById('btnLang').addEventListener('click', toggleLanguage);
+    document.getElementById('btnExport').addEventListener('click', exportSettings);
+    document.getElementById('btnImport').addEventListener('click', importSettings);
+    document.getElementById('btnQuiz').addEventListener('click', startQuiz);
+    document.getElementById('btnFlashcards').addEventListener('click', showFlashcards);
+    document.getElementById('btnBulkEncode').addEventListener('click', () => bulkConvert('encode'));
+    document.getElementById('btnBulkDecode').addEventListener('click', () => bulkConvert('decode'));
+    document.getElementById('btnAddCustom').addEventListener('click', addCustomCode);
 
     // Enter
     plainInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); setMode('encode'); performConversionAndAddHistory(); } });
     dfeOutput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); setMode('decode'); performConversionAndAddHistory(); } });
 
-    // Загрузка истории
-    loadHistory();
+    // ==================== INIT ====================
+    function init() {
+        try {
+            const savedLang = localStorage.getItem('dfeLang');
+            if (savedLang) lang = savedLang;
+            const savedTheme = localStorage.getItem('dfeTheme');
+            if (savedTheme) theme = savedTheme;
+        } catch(e) {}
+        applyTheme();
+        updateLanguage();
+        loadHistoryFromLocal();
+        updateStats();
+        renderCustomList();
+    }
+    init();
 </script>
 </body>
 </html>
