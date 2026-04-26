@@ -3,819 +3,2570 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DFE! Converter</title>
+    <title>DFE! Ultimate Converter</title>
     <style>
+        /* ============================================================
+           DFE! ULTIMATE STYLES - COMPLETE DESIGN SYSTEM
+           ============================================================ */
         :root {
-            --bg: #0d1117; --panel: #161b22; --border: #30363d; --text: #c9d1d9; --accent: #58a6ff;
-            --green: #3fb950; --red: #f85149; --yellow: #d2991d; --purple: #a371f7;
-            --font: 'Courier New', monospace;
+            --bg: #0a0e14;
+            --bg2: #0d1117;
+            --panel: #131820;
+            --panel2: #161b22;
+            --border: #1e2733;
+            --border2: #30363d;
+            --text: #c9d1d9;
+            --text2: #8b949e;
+            --accent: #ff6b35;
+            --accent2: #ff8c5a;
+            --green: #3fb950;
+            --green2: #2ea043;
+            --red: #f85149;
+            --red2: #da3633;
+            --yellow: #f0c040;
+            --yellow2: #d2991d;
+            --purple: #a371f7;
+            --purple2: #8250df;
+            --pink: #ff6b9d;
+            --pink2: #e0558a;
+            --cyan: #39d2c0;
+            --cyan2: #2aa89a;
+            --font: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+            --shadow-glow: 0 0 20px rgba(255,107,53,0.2);
+            --shadow-glow-lg: 0 0 40px rgba(255,107,53,0.3);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+            --transition-fast: 0.15s ease;
+            --transition: 0.25s ease;
+            --transition-slow: 0.4s ease;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font); background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 10px; min-height: 100vh; transition: all 0.3s; }
-        body.light { --bg: #ffffff; --panel: #f6f8fa; --border: #d0d7de; --text: #24292f; --accent: #0969da; --green: #1a7f37; --red: #cf222e; }
-        .container { max-width: 900px; width: 100%; }
-        /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
-        h1 { color: var(--accent); font-size: 26px; letter-spacing: 2px; cursor: pointer; user-select: none; }
-        h1:active { transform: scale(0.95); }
-        .header-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-        .header-btns button, .badge { padding: 5px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel); color: var(--text); cursor: pointer; font-size: 11px; font-family: var(--font); transition: 0.2s; }
-        .header-btns button:hover { border-color: var(--accent); color: var(--accent); }
-        .badge { background: #1f6feb22; border-color: var(--accent); color: var(--accent); font-weight: bold; }
-        .subtitle { text-align: center; color: #8b949e; margin-bottom: 12px; font-size: 12px; }
-        /* Tabs */
-        .tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
-        .tabs button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px 6px 0 0; background: var(--panel); color: var(--text); cursor: pointer; font-size: 12px; font-family: var(--font); transition: 0.2s; border-bottom: none; }
-        .tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-        .tab-content { display: none; }
+        body.light {
+            --bg: #f0f2f5;
+            --bg2: #e8eaed;
+            --panel: #ffffff;
+            --panel2: #f6f8fa;
+            --border: #d0d7de;
+            --border2: #afb8c1;
+            --text: #1a1a2e;
+            --text2: #656d76;
+            --accent: #e65100;
+            --accent2: #ff6b35;
+            --shadow-glow: 0 0 20px rgba(230,81,0,0.15);
+            --shadow-glow-lg: 0 0 40px rgba(230,81,0,0.25);
+        }
+        
+        /* ========== RESET & BASE ========== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        ::selection { background: var(--accent); color: #fff; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border2); }
+        
+        /* ========== PARTICLE BACKGROUND ========== */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: particleFloat 8s infinite ease-in-out;
+            opacity: 0;
+        }
+        .particle:nth-child(odd) { width: 2px; height: 2px; background: var(--cyan); animation-duration: 10s; }
+        .particle:nth-child(3n) { width: 4px; height: 4px; background: var(--purple); animation-duration: 12s; }
+        .particle:nth-child(5n) { background: var(--pink); animation-duration: 7s; }
+        @keyframes particleFloat {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-60px) translateX(30px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* ========== MAIN APP CONTAINER ========== */
+        .app {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 12px 16px;
+        }
+        
+        /* ========== DONATE BAR ========== */
+        .donate-bar {
+            background: linear-gradient(135deg, #ff6b35 0%, #f0c040 50%, #ff6b35 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+            color: #000;
+            padding: 10px 18px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 10px;
+            z-index: 50;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .donate-bar .bal-info { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+        .donate-bar .bal-item { display: flex; align-items: center; gap: 4px; }
+        .donate-bar .btn { background: #000; color: #fff; border: 2px solid #000; font-size: 10px; padding: 6px 12px; }
+        .donate-bar .btn:hover { background: #fff; color: #000; }
+        
+        /* ========== TOP BAR ========== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 18px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 60px;
+            z-index: 40;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent);
+            cursor: pointer;
+            user-select: none;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent);
+            transition: all var(--transition);
+            position: relative;
+        }
+        .logo:hover {
+            text-shadow: 0 0 25px var(--accent), 0 0 50px var(--accent), 0 0 75px var(--accent);
+            transform: scale(1.03);
+        }
+        .logo:active { transform: scale(0.95); }
+        .topbar-btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        
+        /* ========== BUTTON STYLES ========== */
+        .btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: var(--font);
+            transition: all var(--transition);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            letter-spacing: 0.5px;
+        }
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn:active { transform: translateY(0); }
+        .btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .btn.accent:hover { box-shadow: var(--shadow-glow-lg); background: var(--accent2); }
+        .btn.success { color: var(--green); border-color: var(--green); }
+        .btn.success:hover { background: #3fb95015; }
+        .btn.danger { color: var(--red); border-color: var(--red); }
+        .btn.danger:hover { background: #da363315; }
+        .btn.warning { color: var(--yellow); border-color: var(--yellow); }
+        .btn.warning:hover { background: #f0c04015; }
+        .btn.purple { color: var(--purple); border-color: var(--purple); }
+        .btn.purple:hover { background: #a371f715; }
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 10px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+        .btn-sm:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+        .btn-sm.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        
+        /* ========== BADGES ========== */
+        .badge {
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 10px;
+            font-weight: 700;
+            font-family: var(--font);
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .badge-info { background: #58a6ff18; color: #58a6ff; border: 1px solid #58a6ff40; }
+        .badge-success { background: #3fb95018; color: var(--green); border: 1px solid #3fb95040; }
+        .badge-warning { background: #f0c04018; color: var(--yellow); border: 1px solid #f0c04040; }
+        .badge-danger { background: #f8514918; color: var(--red); border: 1px solid #f8514940; }
+        .badge-accent { background: #ff6b3518; color: var(--accent); border: 1px solid #ff6b3540; }
+        
+        /* ========== MAIN LAYOUT ========== */
+        .main-layout { display: flex; gap: 12px; align-items: flex-start; }
+        
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 220px;
+            min-width: 200px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 120px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+        .sidebar .user-card {
+            text-align: center;
+            padding: 10px;
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+        }
+        .sidebar .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--shadow-glow);
+        }
+        .sidebar .username { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+        .sidebar .user-level { font-size: 9px; color: var(--text2); }
+        .sidebar .user-balance { font-size: 10px; color: var(--yellow); font-weight: 600; margin-top: 4px; }
+        .sidebar .divider { border-top: 1px solid var(--border); margin: 6px 0; }
+        .sidebar .nav-btn {
+            width: 100%;
+            padding: 8px 12px;
+            text-align: left;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 11px;
+            font-family: var(--font);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sidebar .nav-btn:hover { background: var(--bg); border-color: var(--border); color: var(--accent); }
+        .sidebar .nav-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 700; }
+        
+        /* ========== CONTENT AREA ========== */
+        .content { flex: 1; min-width: 0; }
+        
+        /* ========== TABS ========== */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            background: var(--panel);
+            border-radius: var(--radius-lg);
+            padding: 4px;
+            border: 1px solid var(--border);
+        }
+        .tabs button {
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--text2);
+            cursor: pointer;
+            font-size: 11px;
+            font-family: var(--font);
+            font-weight: 500;
+            transition: all var(--transition);
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+        .tabs button:hover { color: var(--text); background: var(--bg); }
+        .tabs button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            font-weight: 700;
+            box-shadow: var(--shadow-glow);
+        }
+        .tab-content { display: none; animation: tabFadeIn 0.35s ease; }
         .tab-content.active { display: block; }
-        /* Panels */
-        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 10px; position: relative; }
-        .panel label { display: block; color: #8b949e; margin-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        .panel .copy-btn, .panel .speak-btn { position: absolute; top: 12px; right: 12px; background: var(--panel); border: 1px solid var(--border); color: #8b949e; padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: var(--font); transition: 0.2s; }
-        .panel .speak-btn { right: 100px; }
-        .panel .copy-btn:hover, .panel .speak-btn:hover { border-color: var(--accent); color: var(--accent); }
-        .panel .char-count { position: absolute; bottom: 8px; right: 14px; font-size: 10px; color: #484f58; }
-        textarea { width: 100%; height: 100px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 10px; font-family: var(--font); font-size: 13px; resize: vertical; outline: none; }
-        textarea:focus { border-color: var(--accent); }
-        .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-        .row button, .row select { flex: 1; min-width: 100px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: var(--font); }
-        .row button:hover, .row select:hover { border-color: var(--accent); color: var(--accent); }
-        .row button.accent { background: #1f6feb22; border-color: var(--accent); color: var(--accent); }
-        .row button.danger { color: var(--red); }
-        .row button.danger:hover { border-color: var(--red); background: #da363322; }
-        .error { color: var(--red); font-size: 11px; margin-top: 4px; min-height: 16px; }
-        /* History */
-        .history { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
-        .history h3 { color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .history-list { max-height: 160px; overflow-y: auto; }
-        .history-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 11px; gap: 8px; }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ========== PANELS ========== */
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 10px;
+            position: relative;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .panel:hover { border-color: var(--border2); box-shadow: var(--shadow-md); }
+        .panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .panel label {
+            display: block;
+            color: var(--text2);
+            margin-bottom: 6px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .panel .panel-actions { display: flex; gap: 4px; position: absolute; top: 14px; right: 14px; }
+        .panel .btn-icon {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text2);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 9px;
+            font-family: var(--font);
+            transition: all var(--transition-fast);
+        }
+        .panel .btn-icon:hover { border-color: var(--accent); color: var(--accent); background: var(--panel2); }
+        
+        /* ========== TEXTAREAS ========== */
+        textarea {
+            width: 100%;
+            height: 110px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            padding: 12px;
+            font-family: var(--font);
+            font-size: 13px;
+            resize: vertical;
+            outline: none;
+            transition: all var(--transition);
+            line-height: 1.6;
+        }
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.1), var(--shadow-glow);
+        }
+        textarea::placeholder { color: var(--text2); opacity: 0.6; }
+        .char-count {
+            position: absolute;
+            bottom: 8px;
+            right: 14px;
+            font-size: 9px;
+            color: var(--text2);
+            background: var(--bg);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            pointer-events: none;
+        }
+        .error {
+            color: var(--red);
+            font-size: 10px;
+            margin-top: 4px;
+            min-height: 16px;
+            font-weight: 600;
+        }
+        
+        /* ========== BUTTON ROWS ========== */
+        .btn-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        /* ========== STATS ROW ========== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .stat-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 10px;
+            color: var(--text2);
+            transition: all var(--transition);
+        }
+        .stat-card:hover { border-color: var(--accent); }
+        .stat-card .stat-val {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 2px;
+        }
+        .stat-card .stat-label { text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* ========== HISTORY PANEL ========== */
+        .history-panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+        .history-panel h3 {
+            color: var(--text2);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-list { max-height: 180px; overflow-y: auto; }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 10px;
+            gap: 8px;
+            transition: background var(--transition-fast);
+        }
+        .history-item:hover { background: var(--bg); }
         .history-item:last-child { border-bottom: none; }
-        .history-item .dir { color: var(--accent); white-space: nowrap; min-width: 24px; font-weight: bold; }
-        .history-item .text { color: var(--text); word-break: break-all; flex: 1; }
-        .history-item .text small { color: #8b949e; }
-        .history-item .use-btn, .history-item .del-btn { background: none; border: 1px solid var(--border); color: #8b949e; padding: 2px 6px; border-radius: 3px; cursor: pointer; font-size: 9px; font-family: var(--font); white-space: nowrap; margin-left: 4px; }
-        .history-item .use-btn:hover { border-color: var(--accent); color: var(--accent); }
-        .history-item .del-btn:hover { border-color: var(--red); color: var(--red); }
-        /* Stats */
-        .stats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; font-size: 10px; color: #8b949e; }
-        .stats span { background: var(--panel); border: 1px solid var(--border); padding: 4px 10px; border-radius: 10px; }
-        /* Toast */
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; padding: 10px 24px; border-radius: 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; font-family: var(--font); }
-        .toast.show { opacity: 1; }
-        /* Animations */
-        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
-        .shake { animation: shake 0.3s; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        .pulse { animation: pulse 0.6s; }
-        /* Mobile */
-        @media (max-width: 600px) {
-            h1 { font-size: 20px; }
-            textarea { height: 80px; font-size: 12px; }
-            .row button, .row select { padding: 8px; font-size: 10px; min-width: 70px; }
-            .tabs button { padding: 6px 10px; font-size: 10px; }
+        .history-item .dir {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 12px;
+            min-width: 20px;
+        }
+        .history-item .text {
+            flex: 1;
+            word-break: break-all;
+            color: var(--text);
+        }
+        .history-item .text small { color: var(--text2); display: block; font-size: 8px; }
+        .history-item .act-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text2);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 9px;
+            font-family: var(--font);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+        .history-item .act-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .history-item .act-btn.del:hover { border-color: var(--red); color: var(--red); }
+        
+        /* ========== MODAL SYSTEM ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: modalFadeIn 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal {
+            background: var(--panel);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            max-width: 440px;
+            width: 92%;
+            text-align: center;
+            box-shadow: var(--shadow-lg), var(--shadow-glow-lg);
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal h2 { color: var(--accent); margin-bottom: 14px; font-size: 18px; letter-spacing: 1px; }
+        .modal p { font-size: 11px; color: var(--text2); margin-bottom: 8px; line-height: 1.6; }
+        .modal input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 13px;
+            margin-bottom: 8px;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .modal input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,107,53,0.1); }
+        
+        /* ========== TOAST SYSTEM ========== */
+        .toast-container {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: var(--panel);
+            border: 1px solid var(--accent);
+            color: var(--text);
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            font-size: 11px;
+            font-family: var(--font);
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            animation: toastSlideIn 0.35s ease;
+            max-width: 340px;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        @keyframes toastSlideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .toast.removing { animation: toastSlideOut 0.3s ease forwards; }
+        @keyframes toastSlideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(120%); opacity: 0; }
+        }
+        
+        /* ========== SPECIAL EFFECTS ========== */
+        .glitch {
+            animation: glitchEffect 0.4s linear;
+        }
+        @keyframes glitchEffect {
+            0% { transform: translate(3px, 0) skew(0deg); filter: hue-rotate(0deg); }
+            20% { transform: translate(-3px, 1px) skew(1deg); filter: hue-rotate(90deg); }
+            40% { transform: translate(2px, -1px) skew(-1deg); filter: hue-rotate(180deg); }
+            60% { transform: translate(-2px, 2px) skew(0.5deg); filter: hue-rotate(270deg); }
+            80% { transform: translate(1px, -2px) skew(-0.5deg); filter: hue-rotate(360deg); }
+            100% { transform: translate(0, 0) skew(0deg); filter: hue-rotate(0deg); }
+        }
+        .neon-text {
+            text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 40px var(--accent);
+        }
+        .shake {
+            animation: shakeEffect 0.5s ease;
+        }
+        @keyframes shakeEffect {
+            0%, 100% { transform: translateX(0); }
+            10%, 50%, 90% { transform: translateX(-5px); }
+            30%, 70% { transform: translateX(5px); }
+        }
+        
+        /* ========== ACHIEVEMENT LIST ========== */
+        .achievement-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+        }
+        .achievement-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            text-align: center;
+            font-size: 10px;
+            transition: all var(--transition);
+        }
+        .achievement-card.unlocked { border-color: var(--yellow); background: #f0c04010; }
+        .achievement-card.locked { opacity: 0.5; }
+        .achievement-card .ach-icon { font-size: 28px; margin-bottom: 4px; }
+        .achievement-card .ach-name { font-weight: 700; }
+        
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 800px) {
+            .main-layout { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                min-width: unset;
+                position: static;
+                max-height: unset;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 8px;
+                gap: 2px;
+            }
+            .sidebar .user-card { width: 100%; }
+            .sidebar .nav-btn { flex: 1; min-width: 70px; font-size: 9px; padding: 6px 8px; justify-content: center; }
+            .sidebar .divider { display: none; }
+            textarea { height: 80px; font-size: 11px; }
+            .btn { padding: 7px 10px; font-size: 10px; }
+            .btn-sm { font-size: 9px; padding: 3px 8px; }
+            .logo { font-size: 18px; letter-spacing: 2px; }
+            .tabs button { padding: 6px 8px; font-size: 9px; min-width: 50px; }
+            .topbar { top: 50px; }
+            .donate-bar { font-size: 9px; padding: 8px 12px; }
+            .donate-bar .btn { font-size: 8px; padding: 4px 8px; }
+            .stat-card .stat-val { font-size: 16px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 400px) {
+            .app { padding: 6px; }
+            .topbar { padding: 8px 10px; }
             .panel { padding: 10px; }
-            .panel .copy-btn, .panel .speak-btn { top: 8px; right: 8px; padding: 2px 8px; font-size: 9px; }
-            .panel .speak-btn { right: 80px; }
+            .panel .panel-actions { top: 8px; right: 8px; }
+            .btn-row { gap: 3px; }
+        }
+        
+        /* ========== PRINT STYLES ========== */
+        @media print {
+            body { background: #fff; color: #000; }
+            .sidebar, .topbar, .donate-bar, .tabs, .btn-row, #particles, .toast-container { display: none; }
+            textarea { border: 1px solid #000; }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- Header -->
-    <div class="header">
-        <h1 id="logo" title="Click for Easter egg!">⏁ DFE! ⏁</h1>
-        <div class="header-btns">
-            <span class="badge" id="modeBadge">ENCRYPT</span>
-            <button id="btnExport" title="Export settings">💾 Export</button>
-            <button id="btnImport" title="Import settings">📥 Import</button>
-            <button id="btnTheme" title="Toggle theme">🌓 Theme</button>
-            <button id="btnLang" title="Switch language">🌐 RU</button>
-        </div>
-    </div>
-    <div class="subtitle" id="subtitle">Russian & English ↔ DFE! cipher</div>
+    <!-- ============================================================
+         PARTICLE BACKGROUND
+         ============================================================ -->
+    <div id="particles"></div>
 
-    <!-- Tabs -->
-    <div class="tabs">
-        <button class="active" data-tab="converter">🔄 Converter</button>
-        <button data-tab="learn">📖 Learn DFE!</button>
-        <button data-tab="tools">🛠 Tools</button>
-        <button data-tab="about">ℹ️ About</button>
-    </div>
+    <!-- ============================================================
+         TOAST CONTAINER
+         ============================================================ -->
+    <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Tab 1: Converter -->
-    <div class="tab-content active" id="tab-converter">
-        <div class="panel">
-            <label id="lblPlain">📥 PLAIN TEXT</label>
-            <button class="copy-btn" id="copyPlain">📋 Copy</button>
-            <button class="speak-btn" id="speakPlain">🔊 Speak</button>
-            <textarea id="plainInput" placeholder="Enter Russian or English text..."></textarea>
-            <div class="char-count" id="countPlain">0 chars</div>
-            <div class="error" id="plainError"></div>
-        </div>
-        <div class="row">
-            <button id="btnEncode" class="accent">⬇ ENCRYPT</button>
-            <button id="btnDecode">⬆ DECRYPT</button>
-            <button id="btnSwap">🔄 SWAP</button>
-            <button id="btnClear">🗑 CLEAR</button>
-            <button id="btnRandom">🎲 Random</button>
-            <button id="btnReverse">↩ Reverse</button>
-        </div>
-        <div class="panel">
-            <label id="lblDfe">📤 DFE! CIPHER</label>
-            <button class="copy-btn" id="copyDfe">📋 Copy</button>
-            <button class="speak-btn" id="speakDfe">🔊 Speak</button>
-            <textarea id="dfeOutput" placeholder="DFE! cipher..."></textarea>
-            <div class="char-count" id="countDfe">0 chars</div>
-            <div class="error" id="dfeError"></div>
-        </div>
-        <div class="stats">
-            <span id="statEncrypted">🔒 Encrypted: 0</span>
-            <span id="statDecrypted">🔓 Decrypted: 0</span>
-            <span id="statChars">📝 Total chars: 0</span>
-            <span id="statUptime">⏱ Uptime: 0s</span>
-        </div>
-    </div>
-
-    <!-- Tab 2: Learn DFE! -->
-    <div class="tab-content" id="tab-learn">
-        <div class="panel">
-            <label>📖 DFE! ALPHABET</label>
-            <div id="alphabetTable" style="font-size:11px; line-height:1.8; max-height:300px; overflow-y:auto;"></div>
-        </div>
-        <div class="row">
-            <button id="btnQuiz">🧠 Start Quiz</button>
-            <button id="btnFlashcards">🃏 Flashcards</button>
-        </div>
-        <div id="quizArea" style="display:none;" class="panel"></div>
-    </div>
-
-    <!-- Tab 3: Tools -->
-    <div class="tab-content" id="tab-tools">
-        <div class="panel">
-            <label>🔢 BULK CONVERT</label>
-            <textarea id="bulkInput" placeholder="One word per line..." style="height:80px;"></textarea>
-            <div class="row" style="margin-top:8px;">
-                <button id="btnBulkEncode">⬇ Encrypt All</button>
-                <button id="btnBulkDecode">⬆ Decrypt All</button>
+    <!-- ============================================================
+         MAIN APPLICATION
+         ============================================================ -->
+    <div class="app">
+        <!-- ========== DONATE BAR ========== -->
+        <div class="donate-bar">
+            <div class="bal-info">
+                <span class="bal-item">💰 <b id="userBalance">1,000,000,000$</b></span>
+                <span class="bal-item">💎 <b id="dfeCoins">999,999</b></span>
+                <span class="bal-item">⭐ Level: <b id="userLevel">99</b></span>
             </div>
-            <textarea id="bulkOutput" placeholder="Result..." style="height:80px; margin-top:8px;" readonly></textarea>
-        </div>
-        <div class="panel">
-            <label>🔑 CUSTOM CODE</label>
-            <div class="row">
-                <input type="text" id="customChar" placeholder="Char" style="flex:1; padding:8px; background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:var(--font); border-radius:4px;">
-                <input type="text" id="customCode" placeholder="Code" style="flex:2; padding:8px; background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:var(--font); border-radius:4px;">
-                <button id="btnAddCustom">➕ Add</button>
+            <div style="display:flex;gap:6px;">
+                <button class="btn" onclick="showDonateModal()">💝 DONATE</button>
+                <button class="btn" onclick="fakeMineCoins()">⛏ MINE</button>
+                <button class="btn" onclick="showShopModal()">🛒 SHOP</button>
             </div>
-            <div id="customList" style="font-size:10px; margin-top:6px; color:#8b949e;"></div>
+        </div>
+
+        <!-- ========== TOP BAR ========== -->
+        <div class="topbar">
+            <div class="logo" id="logo" title="Click 5 times for secret!">⏁ DFE! ⏁</div>
+            <div class="topbar-btns">
+                <span class="badge badge-info" id="modeBadge">🔒 ENCRYPT</span>
+                <button class="btn-sm" onclick="toggleTheme()" title="Toggle theme">🌓</button>
+                <button class="btn-sm" onclick="toggleLanguage()" title="Switch language">🌐 EN</button>
+                <button class="btn-sm" onclick="exportAllData()" title="Export all data">💾</button>
+                <button class="btn-sm" onclick="importAllData()" title="Import all data">📥</button>
+                <button class="btn-sm" onclick="showLoginModal()" title="Login / Register">👤</button>
+                <button class="btn-sm" onclick="showAchievementsModal()" title="Achievements">🏆</button>
+                <button class="btn-sm" onclick="showSettingsModal()" title="Settings">⚙️</button>
+            </div>
+        </div>
+
+        <!-- ========== MAIN LAYOUT ========== -->
+        <div class="main-layout">
+            <!-- ========== SIDEBAR ========== -->
+            <div class="sidebar" id="sidebar">
+                <div class="user-card">
+                    <div class="avatar" id="userAvatar">👤</div>
+                    <div class="username" id="userName">Guest_User</div>
+                    <div class="user-level">⭐ Level 99</div>
+                    <div class="user-balance">💰 1,000,000,000$</div>
+                </div>
+                <div class="divider"></div>
+                <button class="nav-btn active" data-section="converter">🔄 Converter</button>
+                <button class="nav-btn" data-section="learn">📖 Learn DFE!</button>
+                <button class="nav-btn" data-section="tools">🛠 Tools</button>
+                <button class="nav-btn" data-section="games">🎮 Mini Games</button>
+                <button class="nav-btn" data-section="social">💬 Social</button>
+                <button class="nav-btn" data-section="shop">🛒 Shop</button>
+                <button class="nav-btn" data-section="achievements">🏆 Achievements</button>
+                <button class="nav-btn" data-section="settings">⚙️ Settings</button>
+                <button class="nav-btn" data-section="about">ℹ️ About</button>
+                <div class="divider"></div>
+                <button class="nav-btn" onclick="triggerGlitch()">⚡ Glitch Mode</button>
+                <button class="nav-btn" onclick="triggerFakeCrash()">💥 Fake Crash</button>
+                <button class="nav-btn" onclick="triggerEasterEgg()">🥚 Easter Egg</button>
+            </div>
+
+            <!-- ========== CONTENT ========== -->
+            <div class="content" id="contentArea">
+                <!-- TABS -->
+                <div class="tabs">
+                    <button class="active" data-tab="convert">🔄 Convert</button>
+                    <button data-tab="bulk">📦 Bulk</button>
+                    <button data-tab="compare">🔍 Compare</button>
+                    <button data-tab="live">📡 Live</button>
+                    <button data-tab="analyze">📊 Analyze</button>
+                </div>
+
+                <!-- ========== CONVERT TAB ========== -->
+                <div class="tab-content active" id="tab-convert">
+                    <div class="panel">
+                        <label>📥 PLAIN TEXT</label>
+                        <div class="panel-actions">
+                            <button class="btn-icon" onclick="copyField('plainInput')">📋</button>
+                            <button class="btn-icon" onclick="speakField('plainInput')">🔊</button>
+                            <button class="btn-icon" onclick="clearField('plainInput')">✕</button>
+                            <button class="btn-icon" onclick="pasteField('plainInput')">📌</button>
+                        </div>
+                        <textarea id="plainInput" placeholder="Enter Russian or English text here...&#10;&#10;Подсказка: можно вставлять большие тексты, эмодзи, любые символы!"></textarea>
+                        <div class="char-count" id="countPlain">0 chars</div>
+                        <div class="error" id="plainError"></div>
+                    </div>
+                    
+                    <div class="btn-row">
+                        <button class="btn accent" onclick="performEncode()">⬇ ENCRYPT TO DFE!</button>
+                        <button class="btn" onclick="performDecode()">⬆ DECRYPT FROM DFE!</button>
+                        <button class="btn" onclick="swapAllFields()">🔄 SWAP FIELDS</button>
+                        <button class="btn danger" onclick="clearAllFields()">🗑 CLEAR ALL</button>
+                        <button class="btn warning" onclick="insertRandomText()">🎲 RANDOM</button>
+                        <button class="btn" onclick="reverseCurrentText()">↩ REVERSE</button>
+                        <button class="btn success" onclick="copyFullResult()">📋 COPY RESULT</button>
+                        <button class="btn purple" onclick="shareResult()">📤 SHARE</button>
+                    </div>
+                    
+                    <div class="panel">
+                        <label>📤 DFE! CIPHER OUTPUT</label>
+                        <div class="panel-actions">
+                            <button class="btn-icon" onclick="copyField('dfeOutput')">📋</button>
+                            <button class="btn-icon" onclick="speakField('dfeOutput')">🔊</button>
+                            <button class="btn-icon" onclick="clearField('dfeOutput')">✕</button>
+                        </div>
+                        <textarea id="dfeOutput" placeholder="DFE! cipher will appear here...&#10;&#10;Или вставьте DFE! шифр для расшифровки."></textarea>
+                        <div class="char-count" id="countDfe">0 chars</div>
+                        <div class="error" id="dfeError"></div>
+                    </div>
+                    
+                    <!-- STATISTICS -->
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <span class="stat-val" id="statEnc">0</span>
+                            <span class="stat-label">🔒 Encrypted</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-val" id="statDec">0</span>
+                            <span class="stat-label">🔓 Decrypted</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-val" id="statChars">0</span>
+                            <span class="stat-label">📝 Total Chars</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-val" id="statUptime">0s</span>
+                            <span class="stat-label">⏱ Uptime</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-val" id="statSpeed">0</span>
+                            <span class="stat-label">⚡ Chars/sec</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-val" id="statErrors">0</span>
+                            <span class="stat-label">❌ Errors</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== BULK TAB ========== -->
+                <div class="tab-content" id="tab-bulk">
+                    <div class="panel">
+                        <label>📦 BULK INPUT (one item per line)</label>
+                        <textarea id="bulkInput" placeholder="Line 1&#10;Line 2&#10;Line 3&#10;..."></textarea>
+                        <div class="btn-row" style="margin-top:8px;">
+                            <button class="btn accent" onclick="bulkConvert('encode')">⬇ ENCRYPT ALL LINES</button>
+                            <button class="btn" onclick="bulkConvert('decode')">⬆ DECRYPT ALL LINES</button>
+                            <button class="btn" onclick="clearField('bulkInput')">🗑 CLEAR</button>
+                        </div>
+                        <textarea id="bulkOutput" placeholder="Results will appear here..." readonly style="margin-top:8px;"></textarea>
+                        <button class="btn success" style="margin-top:6px;" onclick="copyField('bulkOutput')">📋 COPY ALL RESULTS</button>
+                    </div>
+                </div>
+
+                <!-- ========== COMPARE TAB ========== -->
+                <div class="tab-content" id="tab-compare">
+                    <div class="panel">
+                        <label>🔍 ORIGINAL TEXT</label>
+                        <textarea id="compareOriginal" placeholder="Paste original text..."></textarea>
+                    </div>
+                    <div class="panel">
+                        <label>🔍 DFE! CIPHER</label>
+                        <textarea id="compareCipher" placeholder="Paste DFE! cipher..."></textarea>
+                    </div>
+                    <button class="btn accent" onclick="runComparison()">🔍 RUN COMPARISON</button>
+                    <div class="panel" id="compareResultPanel" style="margin-top:8px; min-height:60px; font-size:11px;">
+                        Results will show here...
+                    </div>
+                </div>
+
+                <!-- ========== LIVE TAB ========== -->
+                <div class="tab-content" id="tab-live">
+                    <div class="panel">
+                        <label>📡 LIVE ENCODING (type and see instantly)</label>
+                        <textarea id="liveInput" placeholder="Start typing to see live DFE! encoding..."></textarea>
+                    </div>
+                    <div class="panel" style="min-height:80px; word-break:break-all; font-size:12px;">
+                        <label>📡 LIVE OUTPUT</label>
+                        <div id="liveOutput" style="color:var(--accent);">Waiting for input...</div>
+                    </div>
+                </div>
+
+                <!-- ========== ANALYZE TAB ========== -->
+                <div class="tab-content" id="tab-analyze">
+                    <div class="panel">
+                        <label>📊 DFE! CODE ANALYZER</label>
+                        <textarea id="analyzeInput" placeholder="Paste DFE! cipher to analyze..."></textarea>
+                        <button class="btn accent" style="margin-top:8px;" onclick="analyzeCipher()">📊 ANALYZE</button>
+                        <div id="analyzeResult" style="margin-top:8px; font-size:11px;"></div>
+                    </div>
+                </div>
+
+                <!-- ========== HISTORY ========== -->
+                <div class="history-panel">
+                    <h3>📜 CONVERSION HISTORY <span id="historyCount">(0 items)</span></h3>
+                    <div class="history-list" id="historyList">
+                        <div style="color:var(--text2); font-size:10px; padding:8px 0; text-align:center;">No conversions yet. Start converting!</div>
+                    </div>
+                    <div class="btn-row" style="margin-top:10px;">
+                        <button class="btn danger" onclick="clearAllHistory()">🗑 CLEAR HISTORY</button>
+                        <button class="btn" onclick="saveHistoryToFile()">💾 SAVE HISTORY</button>
+                        <button class="btn" onclick="loadHistoryFromFile()">📥 LOAD HISTORY</button>
+                        <button class="btn warning" onclick="undoLastConversion()">↩ UNDO LAST</button>
+                        <button class="btn purple" onclick="exportHistoryAsCSV()">📊 EXPORT CSV</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Tab 4: About -->
-    <div class="tab-content" id="tab-about">
-        <div class="panel">
-            <label>ℹ️ ABOUT DFE!</label>
-            <p style="font-size:12px; line-height:1.6;">
-                DFE! is a custom cipher created for fun and learning. It encodes Russian and English letters, digits, and symbols into unique character sequences.
-                <br><br>
-                <b>Version:</b> 2.0<br>
-                <b>Author:</b> radjab<br>
-                <b>License:</b> MIT<br>
-                <b>GitHub:</b> <a href="https://github.com/radjab0askhabalievno-ship-it/DFE-Shifr" style="color:var(--accent);">DFE-Shifr</a>
-            </p>
-        </div>
-    </div>
+    <!-- ============================================================
+         HIDDEN FILE INPUT FOR IMPORTS
+         ============================================================ -->
+    <input type="file" id="fileInput" style="display:none;" accept=".json,.csv">
 
-    <!-- History -->
-    <div class="history">
-        <h3>📜 HISTORY <span id="historyCount">0 items</span></h3>
-        <div class="history-list" id="historyList">
-            <div style="color:#484f58; font-size:11px; padding:6px 0;">Empty...</div>
-        </div>
-        <div class="row" style="margin-top:8px;">
-            <button id="clearHistory" class="danger">🗑 Clear History</button>
-            <button id="btnSaveHistory">💾 Save History</button>
-            <button id="btnLoadHistory">📥 Load History</button>
-        </div>
-    </div>
-</div>
+    <!-- ============================================================
+         MODAL CONTAINER (DYNAMIC)
+         ============================================================ -->
+    <div id="modalContainer"></div>
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
-<!-- Hidden file input for import -->
-<input type="file" id="fileInput" style="display:none;" accept=".json">
-
-<script>
-    // ==================== DFE! DICTIONARIES ====================
-    const ruToDfe = {
-        'А':'$r','Б':'&f^','В':'<&g','Г':'$4F','Д':'@rD','Е':'*$r','Ж':'&^:%r','З':'^%$#r','И':'$№f','Й':'&$^r',
-        'К':'^:%r','Л':'&/h','М':'#@Tr','Н':'^%H','О':'%J*','П':'&^YrE','Р':'**&r','С':'$#C','Т':'*(P^','У':'^%f',
-        'Ф':'^:;"&r','Х':'^&^:rG','Ц':'#@%rG','Ч':'$:;rt','Ш':'*I&^','Щ':'*&%^:T','Ъ':'&$;r','Ы':'-*^r','Ь':'%:*r',
-        'Э':'^%&$rG','Ю':'**$&^)rY','Я':'$&^)rY'
-    };
-    const enToDfe = {
-        'A':'**$r','B':'**&f^','C':'**<&g','D':'**$4F','E':'**@rD','F':'***$r','G':'**&^:%r','H':'**^%$#r','I':'**$№f',
-        'J':'**&$^r','K':'**^:%r','L':'**&/h','M':'**#@Tr','N':'**^%H','O':'**%J*','P':'**&^YrE','Q':'****&r','R':'**$#C',
-        'S':'***(P^','T':'**^%f','U':'**^:;"&r','V':'**^&^:rG','W':'**#@%rG','X':'**$:;rt','Y':'***I&^','Z':'***&%^:T'
-    };
-    let digitsToDfe = {};
-    for (let i = 0; i <= 9; i++) digitsToDfe[String(i)] = `-)${i}`;
-    let symbolsToDfe = {
-        ',':'.-','!':'=+-','+':'--._-','?':'-.,-=','"':'_)-:r','_':'%$*@t',"'":'(&(%$r','@':'<^%','.':')_-.',' ':' '
-    };
-    let allToDfe = {...ruToDfe, ...enToDfe, ...digitsToDfe, ...symbolsToDfe};
-    let dfeToChar = {};
-    let sortedCodes = [];
-    function rebuildDicts() {
-        allToDfe = {...ruToDfe, ...enToDfe, ...digitsToDfe, ...symbolsToDfe};
-        dfeToChar = {};
-        for (const [char, code] of Object.entries(allToDfe)) dfeToChar[code] = char;
-        sortedCodes = Object.keys(dfeToChar).sort((a,b) => b.length - a.length);
-    }
-    rebuildDicts();
-
-    // ==================== STATE ====================
-    let currentMode = 'encode';
-    let history = [];
-    let stats = { encrypted: 0, decrypted: 0, totalChars: 0 };
-    let lang = 'en';
-    let theme = 'dark';
-    let startTime = Date.now();
-    let quizData = null;
-
-    // ==================== I18N ====================
-    const i18n = {
-        en: {
-            subtitle: 'Russian & English ↔ DFE! cipher',
-            lblPlain: '📥 PLAIN TEXT',
-            lblDfe: '📤 DFE! CIPHER',
-            placeholderPlain: 'Enter Russian or English text...',
-            placeholderDfe: 'DFE! cipher...',
-            btnEncode: '⬇ ENCRYPT',
-            btnDecode: '⬆ DECRYPT',
-            btnSwap: '🔄 SWAP',
-            btnClear: '🗑 CLEAR',
-            btnRandom: '🎲 Random',
-            btnReverse: '↩ Reverse',
-            modeEncrypt: 'ENCRYPT',
-            modeDecrypt: 'DECRYPT',
-            historyEmpty: 'Empty...',
-            statEncrypted: '🔒 Encrypted: ',
-            statDecrypted: '🔓 Decrypted: ',
-            statChars: '📝 Total chars: ',
-            unknownChar: 'Unknown symbol: ',
-            errorNear: 'Error near: ',
-            enterText: 'Enter text to encrypt',
-            enterCipher: 'Enter DFE! cipher to decrypt',
-            copied: '✅ Copied!',
-            copy: '📋 Copy',
-            quizQuestion: 'What is the DFE! code for: ',
-            quizCorrect: '✅ Correct!',
-            quizWrong: '❌ Wrong! Correct: ',
-            bulkResult: 'Bulk result:',
-        },
-        ru: {
-            subtitle: 'Русский & Английский ↔ DFE! шифр',
-            lblPlain: '📥 ОБЫЧНЫЙ ТЕКСТ',
-            lblDfe: '📤 DFE! ШИФР',
-            placeholderPlain: 'Введи текст на русском или английском...',
-            placeholderDfe: 'DFE! шифр...',
-            btnEncode: '⬇ ЗАШИФРОВАТЬ',
-            btnDecode: '⬆ РАСШИФРОВАТЬ',
-            btnSwap: '🔄 ПОМЕНЯТЬ',
-            btnClear: '🗑 ОЧИСТИТЬ',
-            btnRandom: '🎲 Случайно',
-            btnReverse: '↩ Обратно',
-            modeEncrypt: 'ШИФРОВАНИЕ',
-            modeDecrypt: 'РАСШИФРОВКА',
-            historyEmpty: 'Пусто...',
-            statEncrypted: '🔒 Зашифровано: ',
-            statDecrypted: '🔓 Расшифровано: ',
-            statChars: '📝 Всего символов: ',
-            unknownChar: 'Неизвестный символ: ',
-            errorNear: 'Ошибка возле: ',
-            enterText: 'Введи текст для шифрования',
-            enterCipher: 'Введи DFE! шифр для расшифровки',
-            copied: '✅ Скопировано!',
-            copy: '📋 Копировать',
-            quizQuestion: 'Какой DFE! код для: ',
-            quizCorrect: '✅ Правильно!',
-            quizWrong: '❌ Неправильно! Правильно: ',
-            bulkResult: 'Результат:',
+    <!-- ============================================================
+         COMPLETE DFE! JAVASCRIPT ENGINE
+         ============================================================ -->
+    <script>
+        // ============================================================
+        // SECTION 1: DFE! DICTIONARIES - ALL SYMBOLS COMPLETE
+        // ============================================================
+        
+        // Russian alphabet - all 33 letters
+        const ruToDfe = {
+            'А': '$r',      'Б': '&f^',     'В': '<&g',     'Г': '$4F',
+            'Д': '@rD',     'Е': '*$r',     'Ё': '*$r%',    'Ж': '&^:%r',
+            'З': '^%$#r',   'И': '$№f',     'Й': '&$^r',    'К': '^:%r',
+            'Л': '&/h',     'М': '#@Tr',    'Н': '^%H',     'О': '%J*',
+            'П': '&^YrE',   'Р': '**&r',    'С': '$#C',     'Т': '*(P^',
+            'У': '^%f',     'Ф': '^:;&r',   'Х': '^&^:rG',  'Ц': '#@%rG',
+            'Ч': '$:;rt',   'Ш': '*I&^',    'Щ': '*&%^:T',  'Ъ': '&$;r',
+            'Ы': '-*^r',    'Ь': '%:*r',    'Э': '^%&$rG',  'Ю': '**$&^)rY',
+            'Я': '$&^)rY'
+        };
+        
+        // English alphabet - all 26 letters (by alphabet order matching Russian alphabet order)
+        const enToDfe = {
+            'A': '**$r',      'B': '**&f^',     'C': '**<&g',     'D': '**$4F',
+            'E': '**@rD',     'F': '***$r',     'G': '**&^:%r',   'H': '**^%$#r',
+            'I': '**$№f',     'J': '**&$^r',    'K': '**^:%r',    'L': '**&/h',
+            'M': '**#@Tr',    'N': '**^%H',     'O': '**%J*',     'P': '**&^YrE',
+            'Q': '****&r',    'R': '**$#C',     'S': '***(P^',    'T': '**^%f',
+            'U': '**^:;&r',   'V': '**^&^:rG',  'W': '**#@%rG',   'X': '**$:;rt',
+            'Y': '***I&^',    'Z': '***&%^:T'
+        };
+        
+        // Digits 0-9
+        let digitsToDfe = {};
+        for (let i = 0; i <= 9; i++) {
+            digitsToDfe[String(i)] = '-)' + i;
         }
-    };
-    function t(key) { return (i18n[lang] && i18n[lang][key]) || (i18n['en'][key]) || key; }
-
-    // ==================== DOM ELEMENTS ====================
-    const plainInput = document.getElementById('plainInput');
-    const dfeOutput = document.getElementById('dfeOutput');
-    const plainError = document.getElementById('plainError');
-    const dfeError = document.getElementById('dfeError');
-    const modeBadge = document.getElementById('modeBadge');
-    const historyList = document.getElementById('historyList');
-    const toast = document.getElementById('toast');
-    const fileInput = document.getElementById('fileInput');
-
-    // ==================== TOAST ====================
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 2000);
-    }
-
-    // ==================== MODE ====================
-    function setMode(mode) {
-        currentMode = mode;
-        if (mode === 'encode') {
-            document.getElementById('btnEncode').classList.add('accent');
-            document.getElementById('btnDecode').classList.remove('accent');
-            modeBadge.textContent = t('modeEncrypt');
-        } else {
-            document.getElementById('btnDecode').classList.add('accent');
-            document.getElementById('btnEncode').classList.remove('accent');
-            modeBadge.textContent = t('modeDecrypt');
+        
+        // ALL symbols and emojis - complete set
+        let symbolsToDfe = {
+            // Basic punctuation
+            ',': '.-',          '!': '=+-',         '?': '-.,-=',
+            '.': ')_-.',        ':': '..--..',       ';': '--..--.',
+            '…': '...-.-',      '№': 'N-o-',
+            
+            // Quotes
+            '"': '_)-:r',       '"': '_)-:r',       '"': '_)-:r',
+            '«': '_)-:r',       '»': '_)-:r',       '': '(/&$r',
+            '': '(/&$r',      '': '(/&$r',
+            
+            // Math
+            '+': '--._-',       '-': '-..-',         '=': ').=.-',
+            '*': ').*-.(',      '/': ')./-.(',       '%': ').%-.-',
+            '<': ').<-.(',      '>': ').>-.(',       '^': ').^-.-',
+            
+            // Brackets
+            '(': '(-..)',       ')': ')-..(',        '[': '[-..]',
+            ']': ']-..[',       '{': '{-..}',        '}': '}-..{',
+            
+            // Special characters
+            '@': '<^%',         '#': '.-#-.',        '$': '.-$-.',
+            '&': '.-&-.',       '_': '%$*@t',        '|': '.-|-.',
+            '~': '.-~-.',       '`': '.`-.',         '´': '.´-.',
+            '\\': '.-\\-.',     '\n': '\\n-',        '\t': '\\t-',
+            '\r': '\\r-',       ' ': ' ',
+            
+            // Dashes
+            '—': '--..--',      '–': '--..-',        '‐': '-..-',
+            
+            // ==================== EMOJIS - FULL SET ====================
+            // Smileys
+            '😀': ':grin:',     '😃': ':smiley:',   '😄': ':smile:',
+            '😁': ':grin2:',    '😅': ':sweat:',    '😆': ':laugh:',
+            '😉': ':wink:',     '😊': ':blush:',    '😋': ':yum:',
+            '😎': ':cool:',     '😍': ':hearts:',   '😘': ':kiss:',
+            '😗': ':kiss2:',    '😙': ':kiss3:',    '😚': ':kiss4:',
+            '🙂': ':slight:',   '🤗': ':hug:',      '🤔': ':think:',
+            '😐': ':neutral:',  '😑': ':express:',  '😶': ':nomouth:',
+            '😏': ':smirk:',    '😣': ':persever:', '😥': ':sad:',
+            '😮': ':open:',     '🤐': ':zipper:',   '😯': ':hushed:',
+            '😪': ':sleepy:',   '😫': ':tired:',    '😴': ':sleep:',
+            '😌': ':relieved:', '😛': ':tongue:',   '😜': ':wink2:',
+            '😝': ':squint:',   '🤤': ':drool:',    '😒': ':unamused:',
+            '😓': ':sweat2:',   '😔': ':pensive:',  '😕': ':confused:',
+            '😖': ':confound:', '😞': ':disapp:',   '😟': ':worried:',
+            '😤': ':triumph:',  '😢': ':cry:',      '😭': ':sob:',
+            '😦': ':frown:',    '😧': ':anguish:',  '😨': ':fear:',
+            '😩': ':weary:',    '😰': ':scared:',   '😱': ':scream:',
+            '😳': ':flushed:',  '😵': ':dizzy:',    '😡': ':rage:',
+            '😠': ':angry:',    '🤬': ':swear:',    '😈': ':smiling:',
+            '👿': ':angry2:',   '💀': ':skull:',    '☠': ':skull2:',
+            '💩': ':poop:',     '🤡': ':clown:',    '👹': ':ogre:',
+            '👺': ':goblin:',   '👻': ':ghost:',    '👽': ':alien:',
+            '👾': ':invader:',  '🤖': ':robot:',    '😺': ':catgrin:',
+            
+            // Hands
+            '👍': ':thumbup:',  '👎': ':thumbdown:','👏': ':clap:',
+            '🙌': ':raised:',   '🤝': ':handshake:','🙏': ':pray:',
+            '💪': ':muscle:',   '🖖': ':vulcan:',   '✌': ':victory:',
+            '🤞': ':crossed:',  '🤟': ':loveyou:',  '🤘': ':horns:',
+            '👌': ':okhand:',   '👈': ':pointleft:','👉': ':pointright:',
+            '👆': ':pointup:',  '👇': ':pointdown:', '✊': ':fist:',
+            '👊': ':punch:',    '🤛': ':fistleft:', '🤜': ':fistright:',
+            
+            // Hearts and emotions
+            '❤️': ':redheart:', '💔': ':brokenheart:','💕': ':twohearts:',
+            '💖': ':sparkheart:','💗': ':growheart:', '💘': ':arrowheart:',
+            '💝': ':ribbonheart:','💞': ':revolve:', '💟': ':heartdec:',
+            '💯': ':100:',      '💢': ':anger:',     '💥': ':boom:',
+            '💦': ':sweatdrop:', '💨': ':dash:',     '💫': ':dizzy2:',
+            '💬': ':speech:',   '🗨': ':leftspeech:','🗯': ':rightanger:',
+            '💭': ':thought:',  '💤': ':zzz:',
+            
+            // Objects and symbols
+            '🔥': ':fire:',     '⭐': ':star:',      '🌟': ':glowstar:',
+            '✨': ':sparkles:', '🎉': ':party:',     '🎊': ':confetti:',
+            '🎈': ':balloon:',  '🎁': ':gift:',      '🎂': ':cake:',
+            '🏆': ':trophy:',   '🥇': ':first:',     '🥈': ':second:',
+            '🥉': ':third:',    '🏅': ':medal:',     '🎖': ':military:',
+            '💎': ':gem:',      '💍': ':ring:',      '👑': ':crown:',
+            '🔑': ':key:',      '🛡': ':shield:',    '🗡': ':dagger:',
+            '⚔': ':swords:',   '🔮': ':crystal:',   '🎵': ':music:',
+            '🎶': ':notes:',    '🎤': ':mic:',       '🎧': ':headphone:',
+            '📱': ':phone:',    '💻': ':laptop:',    '🖥': ':desktop:',
+            '⌨': ':keyboard:',  '🖱': ':mouse:',     '🖨': ':printer:',
+            '📷': ':camera:',   '🎥': ':video:',     '📹': ':camcorder:',
+            '💡': ':idea:',     '🔦': ':flashlight:','🕯': ':candle:',
+            '📖': ':book:',     '📚': ':books:',     '📝': ':memo:',
+            '✏': ':pencil:',   '🖊': ':pen:',       '🖋': ':fountain:',
+            '✂': ':scissors:', '📌': ':pushpin:',   '📍': ':roundpin:',
+            '📎': ':paperclip:','🔗': ':link:',      '📋': ':clipboard:',
+            '📅': ':calendar:', '⏰': ':alarm:',     '⏱': ':stopwatch:',
+            '⌛': ':hourglass:', '🔔': ':bell:',      '🔕': ':belloff:',
+            '📣': ':megaphone:','📢': ':loud:',      '🗑': ':waste:',
+            '🔒': ':locked:',   '🔓': ':unlocked:',  '🔏': ':lockpen:',
+            '✅': ':check:',    '❌': ':cross:',     '❓': ':question:',
+            '❗': ':exclaim:',  '⚠': ':warning:',    '🚫': ':nope:',
+            '♻': ':recycle:',  '✅': ':check2:',    '⭕': ':circle:',
+            
+            // Food and drinks
+            '🍕': ':pizza:',    '🍔': ':burger:',    '🍟': ':fries:',
+            '🌭': ':hotdog:',   '🍿': ':popcorn:',   '🧁': ':cupcake:',
+            '🍩': ':donut:',    '🍪': ':cookie:',    '🍫': ':chocolate:',
+            '🍬': ':candy:',    '☕': ':coffee:',    '🍵': ':tea:',
+            '🍺': ':beer:',     '🍷': ':wine:',      '🍸': ':cocktail:',
+            '🍹': ':drink:',    '🧃': ':juice:',     '🥤': ':soda:',
+            
+            // Animals
+            '🐱': ':cat:',      '🐶': ':dog:',       '🐭': ':mouse:',
+            '🐹': ':hamster:',  '🐰': ':rabbit:',    '🦊': ':fox:',
+            '🐻': ':bear:',     '🐼': ':panda:',     '🐨': ':koala:',
+            '🐯': ':tiger:',    '🦁': ':lion:',      '🐮': ':cow:',
+            '🐷': ':pig:',      '🐸': ':frog:',      '🐵': ':monkey:',
+            '🐔': ':chicken:',  '🐧': ':penguin:',   '🐦': ':bird:',
+            '🐤': ':chick:',    '🦆': ':duck:',      '🦅': ':eagle:',
+            '🦉': ':owl:',      '🦇': ':bat:',       '🐺': ':wolf:',
+            '🐗': ':boar:',     '🐴': ':horse:',     '🦄': ':unicorn:',
+            '🐝': ':bee:',      '🐛': ':bug:',       '🦋': ':butterfly:',
+            '🐌': ':snail:',    '🐞': ':ladybug:',   '🐜': ':ant:',
+            '🕷': ':spider:',   '🦂': ':scorpion:',  '🐉': ':dragon:',
+            '🐢': ':turtle:',   '🐍': ':snake:',     '🦎': ':lizard:',
+            '🐙': ':octopus:',  '🦑': ':squid:',     '🦐': ':shrimp:',
+            '🐠': ':tropical:', '🐟': ':fish:',      '🐡': ':blowfish:',
+            '🦈': ':shark:',    '🐳': ':whale:',     '🐬': ':dolphin:',
+            '🐊': ':croc:',     '🦕': ':sauropod:',  '🦖': ':trex:',
+            
+            // Plants
+            '🌸': ':blossom:',  '🌹': ':rose:',      '🌺': ':hibiscus:',
+            '🌻': ':sunflower:','🌼': ':flower:',    '🌷': ':tulip:',
+            '🌱': ':seedling:', '🌲': ':evergreen:', '🌳': ':tree:',
+            '🌴': ':palm:',     '🌵': ':cactus:',    '🍀': ':clover:',
+            '🍁': ':maple:',    '🍂': ':fallen:',    '🍃': ':leaf:',
+            
+            // Weather and sky
+            '☀️': ':sun:',     '🌤': ':suncloud:',  '⛅': ':cloudy:',
+            '🌥': ':sunbehind:','🌦': ':raincloud:', '🌧': ':rain:',
+            '⛈': ':thunder:',  '🌩': ':lightning:', '🌨': ':snowcloud:',
+            '❄': ':snowflake:', '☃': ':snowman:',   '⛄': ':snowman2:',
+            '🌬': ':wind:',    '💧': ':droplet:',    '🌊': ':wave:',
+            '🌈': ':rainbow:',  '⭐': ':star2:',     '🌙': ':crescent:',
+            '🌑': ':newmoon:',  '🌕': ':fullmoon:',  '🚀': ':rocket:',
+            '🛸': ':ufo:',      '🌍': ':earth:',     '🪐': ':saturn:',
+            
+            // Activities and sports
+            '⚽': ':soccer:',   '🏀': ':basketball:','🏈': ':football:',
+            '⚾': ':baseball:', '🎾': ':tennis:',    '🏐': ':volleyball:',
+            '🎮': ':gamepad:',  '🕹': ':joystick:',  '🎰': ':slot:',
+            '🎲': ':dice:',     '♟': ':chess:',     '🎯': ':target:',
+            '🎳': ':bowling:',  '🏓': ':pingpong:',  '🏸': ':badminton:',
+            '🥊': ':boxing:',   '🎿': ':ski:',       '⛸': ':skate:',
+            '🏂': ':snowboard:', '🏄': ':surf:',     '🚴': ':bike:',
+            
+            // Transport
+            '🚗': ':car:',      '🚕': ':taxi:',      '🚙': ':suv:',
+            '🚌': ':bus:',      '🚎': ':trolley:',   '🏎': ':racecar:',
+            '🚓': ':policecar:','🚑': ':ambulance:', '🚒': ':firetruck:',
+            '✈': ':airplane:',  '🚁': ':helicopter:','⛵': ':sailboat:',
+            '🚢': ':ship:',     '🚂': ':train:',     '🚲': ':bicycle:',
+            
+            // Buildings and places
+            '🏠': ':house:',    '🏡': ':home:',      '🏢': ':office:',
+            '🏰': ':castle:',   '⛪': ':church:',    '🏥': ':hospital:',
+            '🏪': ':store:',    '🏫': ':school:',    '🎪': ':circus:',
+            '🎭': ':theater:',  '🎨': ':art:',       '🎬': ':clapper:',
+            
+            // Technology
+            '🔋': ':battery:',  '🔌': ':plug:',      '💾': ':floppy:',
+            '💿': ':cd:',       '📀': ':dvd:',       '🖼': ':frame:',
+            '🔍': ':search:',   '🔎': ':search2:',   '📡': ':antenna:',
+            
+            // UI elements
+            '⬇': ':arrowdown:', '⬆': ':arrowup:',   '⬅': ':arrowleft:',
+            '➡': ':arrowright:', '↩': ':undo:',      '↪': ':redo:',
+            '🔄': ':sync:',     '🔃': ':sync2:',     '↔': ':harrow:',
+            '↕': ':varrow:',    '⤴': ':curveup:',   '⤵': ':curvedown:',
+            'ℹ️': ':info:',    '⏏': ':eject:',     '⏪': ':rewind:',
+            '⏩': ':forward:',  '⏯': ':playpause:', '⏹': ':stop:',
+            '🔀': ':shuffle:',  '🔁': ':repeat:',    '🔂': ':repeat1:',
+        };
+        
+        // Build complete dictionaries
+        let allToDfe = {};
+        let dfeToChar = {};
+        let sortedCodes = [];
+        
+        function rebuildAllDictionaries() {
+            allToDfe = {
+                ...ruToDfe,
+                ...enToDfe,
+                ...digitsToDfe,
+                ...symbolsToDfe
+            };
+            dfeToChar = {};
+            for (const [char, code] of Object.entries(allToDfe)) {
+                dfeToChar[code] = char;
+            }
+            sortedCodes = Object.keys(dfeToChar).sort((a, b) => b.length - a.length);
         }
-    }
-
-    // ==================== ENCODE / DECODE ====================
-    function encode(text) {
-        const upper = text.toUpperCase();
-        let result = '';
-        for (const ch of upper) {
-            if (allToDfe[ch] !== undefined) result += allToDfe[ch];
-            else return { error: t('unknownChar') + `"${ch}"` };
+        rebuildAllDictionaries();
+        
+        // ============================================================
+        // SECTION 2: APPLICATION STATE
+        // ============================================================
+        let state = {
+            mode: 'encode',           // 'encode' or 'decode'
+            history: [],              // Conversion history
+            stats: {
+                encrypted: 0,
+                decrypted: 0,
+                totalChars: 0,
+                errors: 0
+            },
+            lang: 'en',              // 'en' or 'ru'
+            theme: 'dark',           // 'dark' or 'light'
+            startTime: Date.now(),
+            user: {
+                name: 'Guest_User',
+                balance: 1000000000,
+                coins: 999999,
+                avatar: '👤',
+                achievements: [],
+                level: 99,
+                inventory: []
+            },
+            settings: {
+                autoConvert: true,
+                soundEffects: false,
+                animationsEnabled: true,
+                fontSize: 'medium',
+                historyLimit: 100
+            },
+            undoStack: []
+        };
+        
+        // ============================================================
+        // SECTION 3: INITIALIZATION
+        // ============================================================
+        function initApp() {
+            // Create particles
+            createParticleSystem();
+            
+            // Load saved data
+            loadSavedState();
+            
+            // Update UI
+            updateAllUI();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Start timers
+            startUptimeTimer();
+            startSpeedMonitor();
+            
+            // Welcome toast
+            setTimeout(() => {
+                toast('🚀 DFE! Ultimate Converter v3.0 Ready!');
+                toast('💰 Balance: ' + state.user.balance.toLocaleString() + '$');
+            }, 500);
         }
-        return { result };
-    }
-
-    function decode(dfeString) {
-        let remaining = dfeString;
-        let result = '';
-        let failsafe = 0;
-        while (remaining.length > 0 && failsafe < 10000) {
-            failsafe++;
-            let matched = false;
-            for (const code of sortedCodes) {
-                if (remaining.startsWith(code)) {
-                    result += dfeToChar[code];
-                    remaining = remaining.slice(code.length);
-                    matched = true;
-                    break;
+        
+        function createParticleSystem() {
+            const container = document.getElementById('particles');
+            const particleCount = 40;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        function loadSavedState() {
+            try {
+                const saved = localStorage.getItem('dfeUltimateState');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.history) state.history = parsed.history;
+                    if (parsed.stats) state.stats = parsed.stats;
+                    if (parsed.lang) state.lang = parsed.lang;
+                    if (parsed.theme) state.theme = parsed.theme;
+                    if (parsed.user) state.user = parsed.user;
+                    if (parsed.settings) state.settings = parsed.settings;
+                }
+            } catch (e) {
+                console.log('No saved state found, using defaults.');
+            }
+        }
+        
+        function saveStateToStorage() {
+            try {
+                const toSave = {
+                    history: state.history,
+                    stats: state.stats,
+                    lang: state.lang,
+                    theme: state.theme,
+                    user: state.user,
+                    settings: state.settings
+                };
+                localStorage.setItem('dfeUltimateState', JSON.stringify(toSave));
+            } catch (e) {
+                // Storage full or unavailable
+            }
+        }
+        
+        function updateAllUI() {
+            applyTheme();
+            updateModeBadge();
+            updateStatsDisplay();
+            renderHistoryList();
+            updateUserInterface();
+            updateCharacterCounts();
+            updateLanguageDisplay();
+        }
+        
+        function setupEventListeners() {
+            // Plain input
+            const plainInput = document.getElementById('plainInput');
+            if (plainInput) {
+                plainInput.addEventListener('input', () => {
+                    updateCharacterCounts();
+                    if (state.settings.autoConvert && state.mode === 'encode') {
+                        debounceAutoConvert();
+                    }
+                });
+                plainInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        e.preventDefault();
+                        performEncode();
+                    }
+                });
+            }
+            
+            // DFE output
+            const dfeOutput = document.getElementById('dfeOutput');
+            if (dfeOutput) {
+                dfeOutput.addEventListener('input', () => {
+                    updateCharacterCounts();
+                    if (state.settings.autoConvert && state.mode === 'decode') {
+                        debounceAutoConvert();
+                    }
+                });
+                dfeOutput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.ctrlKey) {
+                        e.preventDefault();
+                        performDecode();
+                    }
+                });
+            }
+            
+            // Live input
+            const liveInput = document.getElementById('liveInput');
+            if (liveInput) {
+                liveInput.addEventListener('input', handleLiveEncoding);
+            }
+            
+            // Tab switching
+            document.querySelectorAll('.tabs button[data-tab]').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+            });
+            
+            // Sidebar navigation
+            document.querySelectorAll('.sidebar .nav-btn[data-section]').forEach(btn => {
+                btn.addEventListener('click', () => navigateToSection(btn.dataset.section));
+            });
+            
+            // Logo easter egg
+            const logo = document.getElementById('logo');
+            if (logo) {
+                let clickCount = 0;
+                logo.addEventListener('click', () => {
+                    clickCount++;
+                    if (clickCount >= 5) {
+                        triggerEasterEgg();
+                        clickCount = 0;
+                    }
+                });
+            }
+            
+            // Global keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboardShortcuts);
+        }
+        
+        // ============================================================
+        // SECTION 4: ENCODING / DECODING ENGINE
+        // ============================================================
+        function encodeText(text) {
+            const upper = text.toUpperCase();
+            let result = '';
+            let unknownChars = [];
+            
+            for (const char of upper) {
+                if (allToDfe[char] !== undefined) {
+                    result += allToDfe[char];
+                } else {
+                    unknownChars.push(char);
+                    result += '[?' + char + ']';
                 }
             }
-            if (!matched) {
-                const bad = remaining.length > 10 ? remaining.slice(0,10)+'…' : remaining;
-                return { error: t('errorNear') + `"${bad}"` };
+            
+            if (unknownChars.length > 0) {
+                const unique = [...new Set(unknownChars)];
+                return {
+                    result: result,
+                    warning: '⚠ Skipped unknown characters: ' + unique.join(' ')
+                };
             }
+            
+            return { result: result };
         }
-        return { result };
-    }
-
-    function performConversion() {
-        plainError.textContent = '';
-        dfeError.textContent = '';
-        if (currentMode === 'encode') {
-            const text = plainInput.value;
-            if (!text.trim()) { plainError.textContent = t('enterText'); return null; }
-            const res = encode(text);
-            if (res.error) { plainError.textContent = res.error; dfeOutput.value = ''; return null; }
-            dfeOutput.value = res.result;
-            stats.encrypted++; stats.totalChars += text.length;
-            updateStats();
-            return { dir: '→', from: text, to: res.result };
-        } else {
-            const text = dfeOutput.value;
-            if (!text.trim()) { dfeError.textContent = t('enterCipher'); return null; }
-            const res = decode(text);
-            if (res.error) { dfeError.textContent = res.error; plainInput.value = ''; return null; }
-            plainInput.value = res.result;
-            stats.decrypted++; stats.totalChars += res.result.length;
-            updateStats();
-            return { dir: '←', from: text, to: res.result };
-        }
-    }
-
-    function updateStats() {
-        document.getElementById('statEncrypted').textContent = t('statEncrypted') + stats.encrypted;
-        document.getElementById('statDecrypted').textContent = t('statDecrypted') + stats.decrypted;
-        document.getElementById('statChars').textContent = t('statChars') + stats.totalChars;
-    }
-
-    // Uptime
-    setInterval(() => {
-        const uptime = Math.floor((Date.now() - startTime) / 1000);
-        const m = Math.floor(uptime / 60); const s = uptime % 60;
-        document.getElementById('statUptime').textContent = `⏱ Uptime: ${m}m ${s}s`;
-    }, 1000);
-
-    // ==================== AUTO-CONVERT ====================
-    let autoTimer;
-    function autoConvert() {
-        clearTimeout(autoTimer);
-        autoTimer = setTimeout(() => {
-            if (currentMode === 'encode' && plainInput.value.trim()) performConversionAndAddHistory();
-            else if (currentMode === 'decode' && dfeOutput.value.trim()) performConversionAndAddHistory();
-        }, 400);
-    }
-
-    function performConversionAndAddHistory() {
-        const res = performConversion();
-        if (res) addHistory(res);
-    }
-
-    // ==================== HISTORY ====================
-    function addHistory(entry) {
-        if (history.length > 0 && history[0].from === entry.from && history[0].to === entry.to) return;
-        history.unshift({...entry, time: new Date().toLocaleTimeString()});
-        if (history.length > 50) history.pop();
-        renderHistory();
-        saveHistoryToLocal();
-    }
-
-    function renderHistory() {
-        document.getElementById('historyCount').textContent = history.length + ' items';
-        if (history.length === 0) {
-            historyList.innerHTML = `<div style="color:#484f58; font-size:11px; padding:6px 0;">${t('historyEmpty')}</div>`;
-            return;
-        }
-        historyList.innerHTML = history.map((h,i) => `
-            <div class="history-item">
-                <span class="dir">${h.dir}</span>
-                <span class="text"><small>${h.time}</small> ${escapeHtml(h.from.length > 30 ? h.from.slice(0,30)+'…' : h.from)} → ${escapeHtml(h.to.length > 30 ? h.to.slice(0,30)+'…' : h.to)}</span>
-                <button class="use-btn" data-index="${i}">↩</button>
-                <button class="del-btn" data-index="${i}">✕</button>
-            </div>
-        `).join('');
-        document.querySelectorAll('.use-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const entry = history[parseInt(e.target.dataset.index)];
-                if (entry.dir === '→') { plainInput.value = entry.from; dfeOutput.value = entry.to; }
-                else { dfeOutput.value = entry.from; plainInput.value = entry.to; }
-            });
-        });
-        document.querySelectorAll('.del-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                history.splice(parseInt(e.target.dataset.index), 1);
-                renderHistory();
-                saveHistoryToLocal();
-            });
-        });
-    }
-
-    function saveHistoryToLocal() {
-        try { localStorage.setItem('dfeHistory', JSON.stringify(history)); } catch(e) {}
-    }
-
-    function loadHistoryFromLocal() {
-        try {
-            const saved = localStorage.getItem('dfeHistory');
-            if (saved) history = JSON.parse(saved);
-            renderHistory();
-        } catch(e) {}
-    }
-
-    // ==================== COPY ====================
-    function copyToClipboard(text, btn) {
-        navigator.clipboard.writeText(text).then(() => {
-            btn.textContent = t('copied');
-            setTimeout(() => { btn.textContent = t('copy'); }, 1500);
-            showToast(t('copied'));
-        });
-    }
-
-    // ==================== SPEAK ====================
-    function speak(text) {
-        if ('speechSynthesis' in window) {
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = lang === 'ru' ? 'ru-RU' : 'en-US';
-            utter.rate = 0.9;
-            speechSynthesis.cancel();
-            speechSynthesis.speak(utter);
-        }
-    }
-
-    // ==================== RANDOM TEXT ====================
-    function randomText() {
-        const words = ['ПРИВЕТ','HELLO','DFE','ШИФР','CIPHER','КОНВЕРТЕР','CONVERTER','АЗБУКА','MORSE','КОД','SECRET','ТАЙНА','ХАХА','LOL'];
-        return words[Math.floor(Math.random() * words.length)];
-    }
-
-    // ==================== REVERSE ====================
-    function reverseCode(text) {
-        // Reverse character by character in DFE! format
-        if (currentMode === 'encode') {
-            const codes = [];
-            for (const ch of text.toUpperCase()) {
-                if (allToDfe[ch]) codes.push(allToDfe[ch]);
+        
+        function decodeText(dfeString) {
+            let remaining = dfeString;
+            let result = '';
+            let attempts = 0;
+            const maxAttempts = 50000;
+            
+            while (remaining.length > 0 && attempts < maxAttempts) {
+                attempts++;
+                let found = false;
+                
+                for (const code of sortedCodes) {
+                    if (remaining.startsWith(code)) {
+                        result += dfeToChar[code];
+                        remaining = remaining.slice(code.length);
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if (!found) {
+                    // Try to handle unknown codes gracefully
+                    const snippet = remaining.slice(0, 12);
+                    state.stats.errors++;
+                    updateStatsDisplay();
+                    return {
+                        error: '❌ Cannot decode at: "' + snippet + '..."',
+                        partial: result || '(empty)'
+                    };
+                }
             }
-            return codes.reverse().join('');
+            
+            if (attempts >= maxAttempts) {
+                return { error: '❌ Decoding loop limit reached. Input may be too long or corrupted.' };
+            }
+            
+            return { result: result };
         }
-        return text.split('').reverse().join('');
-    }
-
-    // ==================== QUIZ ====================
-    function startQuiz() {
-        const allChars = Object.keys(allToDfe).filter(c => c !== ' ' && c.length === 1);
-        const randomChar = allChars[Math.floor(Math.random() * allChars.length)];
-        const correctCode = allToDfe[randomChar];
-        quizData = { char: randomChar, code: correctCode };
-        const quizArea = document.getElementById('quizArea');
-        quizArea.style.display = 'block';
-        quizArea.innerHTML = `
-            <label>${t('quizQuestion')} <b style="font-size:24px; color:var(--accent);">${randomChar}</b></label>
-            <input type="text" id="quizAnswer" placeholder="Enter DFE! code..." style="width:100%; padding:10px; background:var(--bg); border:1px solid var(--border); color:var(--text); font-family:var(--font); border-radius:4px; margin-top:8px;">
-            <div class="row" style="margin-top:8px;">
-                <button id="btnQuizSubmit">✅ Submit</button>
-                <button id="btnQuizHint">💡 Hint</button>
-                <button id="btnQuizNext">⏭ Next</button>
-            </div>
-            <div id="quizFeedback" style="margin-top:6px; font-size:12px;"></div>
-        `;
-        document.getElementById('btnQuizSubmit').addEventListener('click', () => {
-            const answer = document.getElementById('quizAnswer').value.trim();
-            const fb = document.getElementById('quizFeedback');
-            if (answer === correctCode) { fb.innerHTML = `<span style="color:var(--green);">${t('quizCorrect')}</span>`; }
-            else { fb.innerHTML = `<span style="color:var(--red);">${t('quizWrong')} ${correctCode}</span>`; document.getElementById('quizAnswer').classList.add('shake'); setTimeout(() => document.getElementById('quizAnswer').classList.remove('shake'), 300); }
-        });
-        document.getElementById('btnQuizHint').addEventListener('click', () => {
-            document.getElementById('quizFeedback').innerHTML = `<span style="color:var(--yellow);">Hint: ${correctCode.slice(0,2)}...</span>`;
-        });
-        document.getElementById('btnQuizNext').addEventListener('click', startQuiz);
-    }
-
-    // ==================== FLASHCARDS ====================
-    function showFlashcards() {
-        const chars = Object.entries(allToDfe).filter(([c]) => c !== ' ' && c.length === 1);
-        const shuffled = chars.sort(() => Math.random() - 0.5).slice(0, 10);
-        const quizArea = document.getElementById('quizArea');
-        quizArea.style.display = 'block';
-        quizArea.innerHTML = '<div id="flashcardContainer"></div><button id="btnFlipAll" style="margin-top:8px; padding:8px 16px; background:var(--panel); border:1px solid var(--border); color:var(--text); border-radius:4px; cursor:pointer; font-family:var(--font);">🔄 Flip All</button>';
-        const container = document.getElementById('flashcardContainer');
-        shuffled.forEach(([char, code]) => {
-            const card = document.createElement('div');
-            card.style.cssText = 'display:inline-block; margin:4px; padding:10px 14px; background:var(--panel); border:1px solid var(--border); border-radius:6px; cursor:pointer; text-align:center; min-width:60px; transition:0.3s;';
-            card.innerHTML = `<b>${char}</b>`;
-            card.dataset.code = code;
-            card.dataset.flipped = 'false';
-            card.addEventListener('click', () => {
-                if (card.dataset.flipped === 'false') { card.innerHTML = `<span style="color:var(--accent);">${code}</span>`; card.dataset.flipped = 'true'; }
-                else { card.innerHTML = `<b>${char}</b>`; card.dataset.flipped = 'false'; }
-            });
-            container.appendChild(card);
-        });
-        document.getElementById('btnFlipAll').addEventListener('click', () => {
-            document.querySelectorAll('#flashcardContainer div').forEach(c => c.click());
-        });
-    }
-
-    // ==================== BULK CONVERT ====================
-    function bulkConvert(direction) {
-        const input = document.getElementById('bulkInput').value.split('\n').filter(l => l.trim());
-        const output = input.map(line => {
+        
+        function performConversion(direction) {
+            clearErrors();
+            
             if (direction === 'encode') {
-                const res = encode(line.trim());
-                return res.error ? `ERR: ${res.error}` : res.result;
+                const input = document.getElementById('plainInput').value;
+                if (!input.trim()) {
+                    showError('plainError', 'Please enter text to encrypt.');
+                    return null;
+                }
+                
+                const startTime = performance.now();
+                const result = encodeText(input);
+                const elapsed = performance.now() - startTime;
+                
+                if (result.error) {
+                    showError('plainError', result.error);
+                    return null;
+                }
+                
+                document.getElementById('dfeOutput').value = result.result;
+                if (result.warning) {
+                    showError('plainError', result.warning);
+                }
+                
+                state.stats.encrypted++;
+                state.stats.totalChars += input.length;
+                updateStatsDisplay();
+                updateCharacterCounts();
+                
+                return {
+                    dir: '→',
+                    from: input,
+                    to: result.result,
+                    time: elapsed.toFixed(1) + 'ms'
+                };
+                
             } else {
-                const res = decode(line.trim());
-                return res.error ? `ERR: ${res.error}` : res.result;
+                const input = document.getElementById('dfeOutput').value;
+                if (!input.trim()) {
+                    showError('dfeError', 'Please enter DFE! cipher to decrypt.');
+                    return null;
+                }
+                
+                const startTime = performance.now();
+                const result = decodeText(input);
+                const elapsed = performance.now() - startTime;
+                
+                if (result.error) {
+                    showError('dfeError', result.error);
+                    return null;
+                }
+                
+                document.getElementById('plainInput').value = result.result;
+                state.stats.decrypted++;
+                state.stats.totalChars += result.result.length;
+                updateStatsDisplay();
+                updateCharacterCounts();
+                
+                return {
+                    dir: '←',
+                    from: input,
+                    to: result.result,
+                    time: elapsed.toFixed(1) + 'ms'
+                };
             }
-        });
-        document.getElementById('bulkOutput').value = output.join('\n');
-    }
-
-    // ==================== CUSTOM CODE ====================
-    function addCustomCode() {
-        const char = document.getElementById('customChar').value.trim().toUpperCase();
-        const code = document.getElementById('customCode').value.trim();
-        if (!char || !code) return showToast('Enter both char and code');
-        if (char.length !== 1) return showToast('Char must be 1 symbol');
-        symbolsToDfe[char] = code;
-        rebuildDicts();
-        renderCustomList();
-        showToast(`Added: ${char} → ${code}`);
-    }
-
-    function renderCustomList() {
-        const list = document.getElementById('customList');
-        const customs = Object.entries(symbolsToDfe);
-        if (customs.length === 0) { list.textContent = 'No custom codes'; return; }
-        list.innerHTML = customs.map(([c,cd]) => `<span style="display:inline-block; margin:2px 4px; background:var(--panel); padding:2px 8px; border-radius:8px; border:1px solid var(--border);">${c}→${cd} <button onclick="deleteCustom('${c}')" style="background:none; border:none; color:var(--red); cursor:pointer;">✕</button></span>`).join('');
-    }
-
-    function deleteCustom(char) {
-        delete symbolsToDfe[char];
-        rebuildDicts();
-        renderCustomList();
-        showToast(`Removed: ${char}`);
-    }
-
-    // ==================== EXPORT / IMPORT ====================
-    function exportSettings() {
-        const data = { ruToDfe, enToDfe, digitsToDfe, symbolsToDfe, history, stats, lang, theme };
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dfe-settings.json'; a.click();
-        showToast('Settings exported!');
-    }
-
-    function importSettings() {
-        fileInput.click();
-    }
-
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            try {
-                const data = JSON.parse(ev.target.result);
-                if (data.ruToDfe) Object.assign(ruToDfe, data.ruToDfe);
-                if (data.enToDfe) Object.assign(enToDfe, data.enToDfe);
-                if (data.digitsToDfe) digitsToDfe = data.digitsToDfe;
-                if (data.symbolsToDfe) symbolsToDfe = data.symbolsToDfe;
-                if (data.history) { history = data.history; renderHistory(); }
-                if (data.stats) stats = data.stats;
-                if (data.lang) { lang = data.lang; updateLanguage(); }
-                if (data.theme) { theme = data.theme; applyTheme(); }
-                rebuildDicts();
-                updateStats();
-                renderCustomList();
-                showToast('Settings imported!');
-            } catch(ex) { showToast('Invalid file!'); }
-        };
-        reader.readAsText(file);
-        fileInput.value = '';
-    });
-
-    // ==================== THEME ====================
-    function applyTheme() {
-        document.body.classList.toggle('light', theme === 'light');
-        document.getElementById('btnTheme').textContent = theme === 'dark' ? '🌙 Dark' : '☀️ Light';
-    }
-
-    function toggleTheme() {
-        theme = theme === 'dark' ? 'light' : 'dark';
-        applyTheme();
-        try { localStorage.setItem('dfeTheme', theme); } catch(e) {}
-    }
-
-    // ==================== LANGUAGE ====================
-    function updateLanguage() {
-        document.getElementById('subtitle').textContent = t('subtitle');
-        document.getElementById('lblPlain').textContent = t('lblPlain');
-        document.getElementById('lblDfe').textContent = t('lblDfe');
-        plainInput.placeholder = t('placeholderPlain');
-        dfeOutput.placeholder = t('placeholderDfe');
-        document.getElementById('btnEncode').textContent = t('btnEncode');
-        document.getElementById('btnDecode').textContent = t('btnDecode');
-        document.getElementById('btnSwap').textContent = t('btnSwap');
-        document.getElementById('btnClear').textContent = t('btnClear');
-        document.getElementById('btnRandom').textContent = t('btnRandom');
-        document.getElementById('btnReverse').textContent = t('btnReverse');
-        if (currentMode === 'encode') modeBadge.textContent = t('modeEncrypt');
-        else modeBadge.textContent = t('modeDecrypt');
-        document.getElementById('btnLang').textContent = lang === 'en' ? '🌐 RU' : '🌐 EN';
-        updateStats();
-        renderHistory();
-        document.getElementById('copyPlain').textContent = t('copy');
-        document.getElementById('copyDfe').textContent = t('copy');
-    }
-
-    function toggleLanguage() {
-        lang = lang === 'en' ? 'ru' : 'en';
-        updateLanguage();
-        try { localStorage.setItem('dfeLang', lang); } catch(e) {}
-    }
-
-    // ==================== TABS ====================
-    document.querySelectorAll('.tabs button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-            if (btn.dataset.tab === 'learn') renderAlphabet();
-        });
-    });
-
-    function renderAlphabet() {
-        const table = document.getElementById('alphabetTable');
-        let html = '<b>RU:</b><br>';
-        for (const [ch, cd] of Object.entries(ruToDfe)) html += `<span style="margin:2px 4px;">${ch}→${cd}</span> `;
-        html += '<br><br><b>EN:</b><br>';
-        for (const [ch, cd] of Object.entries(enToDfe)) html += `<span style="margin:2px 4px;">${ch}→${cd}</span> `;
-        html += '<br><br><b>DIGITS:</b><br>';
-        for (const [ch, cd] of Object.entries(digitsToDfe)) html += `<span style="margin:2px 4px;">${ch}→${cd}</span> `;
-        html += '<br><br><b>SYMBOLS:</b><br>';
-        for (const [ch, cd] of Object.entries(symbolsToDfe)) html += `<span style="margin:2px 4px;">${escapeHtml(ch)}→${cd}</span> `;
-        table.innerHTML = html;
-    }
-
-    // ==================== CHARACTER COUNT ====================
-    plainInput.addEventListener('input', () => {
-        document.getElementById('countPlain').textContent = plainInput.value.length + ' chars';
-        if (currentMode === 'encode') autoConvert();
-    });
-    dfeOutput.addEventListener('input', () => {
-        document.getElementById('countDfe').textContent = dfeOutput.value.length + ' chars';
-        if (currentMode === 'decode') autoConvert();
-    });
-
-    // ==================== EASTER EGG ====================
-    let logoClicks = 0;
-    document.getElementById('logo').addEventListener('click', () => {
-        logoClicks++;
-        if (logoClicks >= 5) {
-            document.body.classList.add('pulse');
-            setTimeout(() => document.body.classList.remove('pulse'), 600);
-            showToast('🕵️ DFE! SECRET MODE ACTIVATED!');
-            logoClicks = 0;
         }
-    });
-
-    // ==================== EVENT HANDLERS ====================
-    document.getElementById('btnEncode').addEventListener('click', () => { setMode('encode'); performConversionAndAddHistory(); });
-    document.getElementById('btnDecode').addEventListener('click', () => { setMode('decode'); performConversionAndAddHistory(); });
-    document.getElementById('btnSwap').addEventListener('click', () => {
-        [plainInput.value, dfeOutput.value] = [dfeOutput.value, plainInput.value];
-        plainError.textContent = ''; dfeError.textContent = '';
-        document.getElementById('countPlain').textContent = plainInput.value.length + ' chars';
-        document.getElementById('countDfe').textContent = dfeOutput.value.length + ' chars';
-    });
-    document.getElementById('btnClear').addEventListener('click', () => {
-        plainInput.value = ''; dfeOutput.value = '';
-        plainError.textContent = ''; dfeError.textContent = '';
-        document.getElementById('countPlain').textContent = '0 chars';
-        document.getElementById('countDfe').textContent = '0 chars';
-    });
-    document.getElementById('btnRandom').addEventListener('click', () => {
-        if (currentMode === 'encode') plainInput.value = randomText();
-        else dfeOutput.value = encode(randomText()).result;
-        performConversionAndAddHistory();
-    });
-    document.getElementById('btnReverse').addEventListener('click', () => {
-        if (currentMode === 'encode') {
-            const rev = reverseCode(plainInput.value);
-            dfeOutput.value = rev;
-        } else {
-            plainInput.value = dfeOutput.value.split('').reverse().join('');
+        
+        function performEncode() {
+            state.mode = 'encode';
+            updateModeBadge();
+            const result = performConversion('encode');
+            if (result) {
+                addToHistory(result);
+                addToUndoStack(result);
+                toast('✅ Encrypted in ' + result.time);
+            }
         }
-        performConversionAndAddHistory();
-    });
-    document.getElementById('copyPlain').addEventListener('click', () => copyToClipboard(plainInput.value, document.getElementById('copyPlain')));
-    document.getElementById('copyDfe').addEventListener('click', () => copyToClipboard(dfeOutput.value, document.getElementById('copyDfe')));
-    document.getElementById('speakPlain').addEventListener('click', () => speak(plainInput.value));
-    document.getElementById('speakDfe').addEventListener('click', () => speak(dfeOutput.value));
-    document.getElementById('clearHistory').addEventListener('click', () => { history = []; renderHistory(); saveHistoryToLocal(); showToast('History cleared!'); });
-    document.getElementById('btnSaveHistory').addEventListener('click', () => {
-        const blob = new Blob([JSON.stringify(history, null, 2)], {type: 'application/json'});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dfe-history.json'; a.click();
-    });
-    document.getElementById('btnLoadHistory').addEventListener('click', () => {
-        fileInput.onchange = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                try { history = JSON.parse(ev.target.result); renderHistory(); saveHistoryToLocal(); showToast('History loaded!'); } catch(ex) { showToast('Invalid file!'); }
+        
+        function performDecode() {
+            state.mode = 'decode';
+            updateModeBadge();
+            const result = performConversion('decode');
+            if (result) {
+                addToHistory(result);
+                addToUndoStack(result);
+                toast('✅ Decrypted in ' + result.time);
+            }
+        }
+        
+        // Auto-convert with debounce
+        let autoConvertTimer = null;
+        function debounceAutoConvert() {
+            clearTimeout(autoConvertTimer);
+            autoConvertTimer = setTimeout(() => {
+                if (state.mode === 'encode') {
+                    const result = performConversion('encode');
+                    if (result) {
+                        addToHistorySilent(result);
+                        addToUndoStack(result);
+                    }
+                } else {
+                    const result = performConversion('decode');
+                    if (result) {
+                        addToHistorySilent(result);
+                        addToUndoStack(result);
+                    }
+                }
+            }, 500);
+        }
+        
+        function handleLiveEncoding() {
+            const input = document.getElementById('liveInput').value;
+            const output = document.getElementById('liveOutput');
+            if (!input.trim()) {
+                output.textContent = 'Waiting for input...';
+                output.style.color = 'var(--text2)';
+                return;
+            }
+            const result = encodeText(input);
+            output.textContent = result.result || result.error || 'Error';
+            output.style.color = result.warning ? 'var(--yellow)' : 'var(--accent)';
+        }
+        
+        // ============================================================
+        // SECTION 5: HISTORY MANAGEMENT
+        // ============================================================
+        function addToHistory(entry) {
+            entry.timestamp = new Date().toISOString();
+            entry.id = Date.now();
+            state.history.unshift(entry);
+            if (state.history.length > state.settings.historyLimit) {
+                state.history.pop();
+            }
+            renderHistoryList();
+            saveStateToStorage();
+        }
+        
+        function addToHistorySilent(entry) {
+            entry.timestamp = new Date().toISOString();
+            entry.id = Date.now();
+            // Don't duplicate consecutive identical entries
+            if (state.history.length > 0 &&
+                state.history[0].from === entry.from &&
+                state.history[0].to === entry.to) {
+                return;
+            }
+            state.history.unshift(entry);
+            if (state.history.length > state.settings.historyLimit) {
+                state.history.pop();
+            }
+            renderHistoryList();
+            saveStateToStorage();
+        }
+        
+        function addToUndoStack(entry) {
+            state.undoStack.push({ ...entry });
+            if (state.undoStack.length > 20) {
+                state.undoStack.shift();
+            }
+        }
+        
+        function renderHistoryList() {
+            const container = document.getElementById('historyList');
+            const counter = document.getElementById('historyCount');
+            
+            counter.textContent = '(' + state.history.length + ' items)';
+            
+            if (state.history.length === 0) {
+                container.innerHTML = '<div style="color:var(--text2); font-size:10px; padding:8px 0; text-align:center;">No conversions yet. Start converting!</div>';
+                return;
+            }
+            
+            container.innerHTML = state.history.map((entry, index) => {
+                const timeStr = new Date(entry.timestamp).toLocaleTimeString();
+                const fromPreview = entry.from.length > 30 ? entry.from.slice(0, 30) + '...' : entry.from;
+                const toPreview = entry.to.length > 30 ? entry.to.slice(0, 30) + '...' : entry.to;
+                const direction = entry.dir;
+                
+                return `
+                    <div class="history-item">
+                        <span class="dir">${direction}</span>
+                        <span class="text">
+                            <small>${timeStr} | ${entry.time || 'N/A'}</small>
+                            ${escapeHtml(fromPreview)} → ${escapeHtml(toPreview)}
+                        </span>
+                        <button class="act-btn" onclick="restoreHistoryItem(${index})" title="Restore">↩</button>
+                        <button class="act-btn del" onclick="deleteHistoryItem(${index})" title="Delete">✕</button>
+                        <button class="act-btn" onclick="copyHistoryItem(${index})" title="Copy">📋</button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function restoreHistoryItem(index) {
+            const entry = state.history[index];
+            if (!entry) return;
+            
+            if (entry.dir === '→') {
+                document.getElementById('plainInput').value = entry.from;
+                document.getElementById('dfeOutput').value = entry.to;
+                state.mode = 'encode';
+            } else {
+                document.getElementById('dfeOutput').value = entry.from;
+                document.getElementById('plainInput').value = entry.to;
+                state.mode = 'decode';
+            }
+            
+            updateModeBadge();
+            updateCharacterCounts();
+            toast('↩ Restored from history');
+        }
+        
+        function deleteHistoryItem(index) {
+            state.history.splice(index, 1);
+            renderHistoryList();
+            saveStateToStorage();
+            toast('🗑 Item removed');
+        }
+        
+        function copyHistoryItem(index) {
+            const entry = state.history[index];
+            if (!entry) return;
+            const text = entry.dir + ' ' + entry.from + ' → ' + entry.to;
+            navigator.clipboard.writeText(text).then(() => {
+                toast('📋 Copied to clipboard');
+            });
+        }
+        
+        function clearAllHistory() {
+            if (confirm('Delete all conversion history?')) {
+                state.history = [];
+                state.undoStack = [];
+                renderHistoryList();
+                saveStateToStorage();
+                toast('🗑 All history cleared');
+            }
+        }
+        
+        function undoLastConversion() {
+            if (state.undoStack.length < 2) {
+                toast('Nothing to undo');
+                return;
+            }
+            state.undoStack.pop(); // Remove current
+            const previous = state.undoStack[state.undoStack.length - 1];
+            
+            if (previous.dir === '→') {
+                document.getElementById('plainInput').value = previous.from;
+                document.getElementById('dfeOutput').value = previous.to;
+            } else {
+                document.getElementById('dfeOutput').value = previous.from;
+                document.getElementById('plainInput').value = previous.to;
+            }
+            
+            updateCharacterCounts();
+            toast('↩ Undone!');
+        }
+        
+        function saveHistoryToFile() {
+            const blob = new Blob([JSON.stringify(state.history, null, 2)], { type: 'application/json' });
+            downloadFile(blob, 'dfe-history-' + Date.now() + '.json');
+            toast('💾 History saved to file');
+        }
+        
+        function loadHistoryFromFile() {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.accept = '.json';
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const loaded = JSON.parse(ev.target.result);
+                        if (Array.isArray(loaded)) {
+                            state.history = loaded;
+                            renderHistoryList();
+                            saveStateToStorage();
+                            toast('📥 History loaded (' + loaded.length + ' items)');
+                        } else {
+                            toast('❌ Invalid history file format');
+                        }
+                    } catch (ex) {
+                        toast('❌ Failed to parse history file');
+                    }
+                };
+                reader.readAsText(file);
+                fileInput.value = '';
             };
-            reader.readAsText(file);
-            fileInput.value = '';
-        };
-        fileInput.accept = '.json';
-        fileInput.click();
-        fileInput.accept = '.json';
-    });
-    document.getElementById('btnTheme').addEventListener('click', toggleTheme);
-    document.getElementById('btnLang').addEventListener('click', toggleLanguage);
-    document.getElementById('btnExport').addEventListener('click', exportSettings);
-    document.getElementById('btnImport').addEventListener('click', importSettings);
-    document.getElementById('btnQuiz').addEventListener('click', startQuiz);
-    document.getElementById('btnFlashcards').addEventListener('click', showFlashcards);
-    document.getElementById('btnBulkEncode').addEventListener('click', () => bulkConvert('encode'));
-    document.getElementById('btnBulkDecode').addEventListener('click', () => bulkConvert('decode'));
-    document.getElementById('btnAddCustom').addEventListener('click', addCustomCode);
-
-    // Enter
-    plainInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); setMode('encode'); performConversionAndAddHistory(); } });
-    dfeOutput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); setMode('decode'); performConversionAndAddHistory(); } });
-
-    // ==================== INIT ====================
-    function init() {
-        try {
-            const savedLang = localStorage.getItem('dfeLang');
-            if (savedLang) lang = savedLang;
-            const savedTheme = localStorage.getItem('dfeTheme');
-            if (savedTheme) theme = savedTheme;
-        } catch(e) {}
-        applyTheme();
-        updateLanguage();
-        loadHistoryFromLocal();
-        updateStats();
-        renderCustomList();
-    }
-    init();
-</script>
+            fileInput.click();
+        }
+        
+        function exportHistoryAsCSV() {
+            let csv = 'Direction,From,To,Timestamp,Time\n';
+            state.history.forEach(entry => {
+                csv += '"' + entry.dir + '","' + entry.from + '","' + entry.to + '","' + entry.timestamp + '","' + (entry.time || '') + '"\n';
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            downloadFile(blob, 'dfe-history-' + Date.now() + '.csv');
+            toast('📊 CSV exported');
+        }
+        
+        // ============================================================
+        // SECTION 6: BULK OPERATIONS
+        // ============================================================
+        function bulkConvert(direction) {
+            const input = document.getElementById('bulkInput').value;
+            const lines = input.split('\n').filter(line => line.trim() !== '');
+            
+            if (lines.length === 0) {
+                toast('⚠ No lines to convert');
+                return;
+            }
+            
+            const results = lines.map((line, index) => {
+                const trimmed = line.trim();
+                if (direction === 'encode') {
+                    const result = encodeText(trimmed);
+                    return result.error ? 'ERR[' + (index + 1) + ']: ' + result.error : result.result;
+                } else {
+                    const result = decodeText(trimmed);
+                    return result.error ? 'ERR[' + (index + 1) + ']: ' + result.error : result.result;
+                }
+            });
+            
+            document.getElementById('bulkOutput').value = results.join('\n');
+            toast('✅ Bulk ' + direction + ' completed: ' + lines.length + ' lines');
+        }
+        
+        // ============================================================
+        // SECTION 7: COMPARISON & ANALYSIS
+        // ============================================================
+        function runComparison() {
+            const original = document.getElementById('compareOriginal').value.trim();
+            const cipher = document.getElementById('compareCipher').value.trim();
+            const resultPanel = document.getElementById('compareResultPanel');
+            
+            if (!original || !cipher) {
+                resultPanel.innerHTML = '<span style="color:var(--red);">Please enter both original text and cipher.</span>';
+                return;
+            }
+            
+            const encoded = encodeText(original);
+            const decoded = decodeText(cipher);
+            
+            let html = '<div style="line-height:1.8;">';
+            
+            // Check if cipher matches
+            if (encoded.result === cipher) {
+                html += '<span style="color:var(--green);">✅ Original → Cipher: MATCH</span><br>';
+            } else {
+                html += '<span style="color:var(--red);">❌ Original → Cipher: MISMATCH</span><br>';
+                html += '<small>Expected: ' + escapeHtml(encoded.result.slice(0, 60)) + '...</small><br>';
+            }
+            
+            // Check if decode matches
+            if (decoded.result === original.toUpperCase()) {
+                html += '<span style="color:var(--green);">✅ Cipher → Original: MATCH</span><br>';
+            } else {
+                html += '<span style="color:var(--red);">❌ Cipher → Original: MISMATCH</span><br>';
+                html += '<small>Got: ' + escapeHtml((decoded.result || '').slice(0, 60)) + '...</small><br>';
+            }
+            
+            // Stats
+            html += '<br><b>Stats:</b><br>';
+            html += 'Original length: ' + original.length + ' chars<br>';
+            html += 'Cipher length: ' + cipher.length + ' chars<br>';
+            html += 'Ratio: ' + (original.length > 0 ? (cipher.length / original.length).toFixed(2) : 'N/A') + 'x<br>';
+            
+            html += '</div>';
+            resultPanel.innerHTML = html;
+        }
+        
+        function analyzeCipher() {
+            const input = document.getElementById('analyzeInput').value.trim();
+            const resultDiv = document.getElementById('analyzeResult');
+            
+            if (!input) {
+                resultDiv.innerHTML = '<span style="color:var(--red);">Please paste DFE! cipher to analyze.</span>';
+                return;
+            }
+            
+            // Count codes
+            const codeCounts = {};
+            let remaining = input;
+            let decoded = '';
+            let failsafe = 0;
+            
+            while (remaining.length > 0 && failsafe < 10000) {
+                failsafe++;
+                let found = false;
+                for (const code of sortedCodes) {
+                    if (remaining.startsWith(code)) {
+                        const char = dfeToChar[code];
+                        codeCounts[code] = (codeCounts[code] || 0) + 1;
+                        decoded += char;
+                        remaining = remaining.slice(code.length);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    remaining = remaining.slice(1);
+                }
+            }
+            
+            const totalCodes = Object.values(codeCounts).reduce((a, b) => a + b, 0);
+            const uniqueCodes = Object.keys(codeCounts).length;
+            
+            let html = '<div style="line-height:1.6;">';
+            html += '<b>📊 Analysis Results:</b><br>';
+            html += 'Decoded text: ' + escapeHtml(decoded.slice(0, 100)) + (decoded.length > 100 ? '...' : '') + '<br>';
+            html += 'Total codes found: ' + totalCodes + '<br>';
+            html += 'Unique code types: ' + uniqueCodes + '<br>';
+            html += 'Decoded characters: ' + decoded.length + '<br>';
+            html += '<br><b>Most used codes:</b><br>';
+            
+            const sorted = Object.entries(codeCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+            sorted.forEach(([code, count]) => {
+                const char = dfeToChar[code] || '?';
+                html += escapeHtml(code) + ' → "' + char + '" used ' + count + ' times<br>';
+            });
+            
+            html += '</div>';
+            resultDiv.innerHTML = html;
+        }
+        
+        // ============================================================
+        // SECTION 8: UI UTILITIES
+        // ============================================================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tabs button[data-tab]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const targetBtn = document.querySelector('.tabs button[data-tab="' + tabId + '"]');
+            const targetTab = document.getElementById('tab-' + tabId);
+            
+            if (targetBtn) targetBtn.classList.add('active');
+            if (targetTab) targetTab.classList.add('active');
+        }
+        
+        function navigateToSection(section) {
+            document.querySelectorAll('.sidebar .nav-btn[data-section]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const targetBtn = document.querySelector('.sidebar .nav-btn[data-section="' + section + '"]');
+            if (targetBtn) targetBtn.classList.add('active');
+            
+            toast('📂 Navigated to: ' + section);
+        }
+        
+        function updateModeBadge() {
+            const badge = document.getElementById('modeBadge');
+            if (state.mode === 'encode') {
+                badge.textContent = state.lang === 'ru' ? '🔒 ШИФРОВАНИЕ' : '🔒 ENCRYPT';
+                badge.className = 'badge badge-info';
+            } else {
+                badge.textContent = state.lang === 'ru' ? '🔓 РАСШИФРОВКА' : '🔓 DECRYPT';
+                badge.className = 'badge badge-success';
+            }
+        }
+        
+        function updateStatsDisplay() {
+            document.getElementById('statEnc').textContent = state.stats.encrypted;
+            document.getElementById('statDec').textContent = state.stats.decrypted;
+            document.getElementById('statChars').textContent = state.stats.totalChars;
+            document.getElementById('statErrors').textContent = state.stats.errors;
+        }
+        
+        function updateUserInterface() {
+            document.getElementById('userAvatar').textContent = state.user.avatar;
+            document.getElementById('userName').textContent = state.user.name;
+            document.getElementById('userBalance').textContent = state.user.balance.toLocaleString() + '$';
+            document.getElementById('dfeCoins').textContent = state.user.coins.toLocaleString();
+            document.getElementById('userLevel').textContent = state.user.level;
+        }
+        
+        function updateCharacterCounts() {
+            const plain = document.getElementById('plainInput');
+            const dfe = document.getElementById('dfeOutput');
+            if (plain) document.getElementById('countPlain').textContent = plain.value.length + ' chars';
+            if (dfe) document.getElementById('countDfe').textContent = dfe.value.length + ' chars';
+        }
+        
+        function updateLanguageDisplay() {
+            document.getElementById('modeBadge').textContent = state.lang === 'ru' ? '🔒 ШИФРОВАНИЕ' : '🔒 ENCRYPT';
+        }
+        
+        function applyTheme() {
+            document.body.classList.toggle('light', state.theme === 'light');
+        }
+        
+        function clearErrors() {
+            document.getElementById('plainError').textContent = '';
+            document.getElementById('dfeError').textContent = '';
+        }
+        
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+            state.stats.errors++;
+            updateStatsDisplay();
+        }
+        
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+        
+        function downloadFile(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // ============================================================
+        // SECTION 9: FIELD OPERATIONS
+        // ============================================================
+        function copyField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (!field) return;
+            navigator.clipboard.writeText(field.value).then(() => {
+                toast('📋 Copied!');
+            }).catch(() => {
+                toast('❌ Copy failed');
+            });
+        }
+        
+        function speakField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (!field || !field.value) return;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(field.value);
+                utterance.rate = 0.9;
+                utterance.lang = state.lang === 'ru' ? 'ru-RU' : 'en-US';
+                speechSynthesis.cancel();
+                speechSynthesis.speak(utterance);
+                toast('🔊 Speaking...');
+            } else {
+                toast('❌ Speech not supported');
+            }
+        }
+        
+        function clearField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (!field) return;
+            field.value = '';
+            updateCharacterCounts();
+            toast('🗑 Cleared');
+        }
+        
+        function pasteField(fieldId) {
+            navigator.clipboard.readText().then(text => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.value = text;
+                    updateCharacterCounts();
+                    toast('📌 Pasted!');
+                }
+            }).catch(() => {
+                toast('❌ Paste failed. Please paste manually (Ctrl+V)');
+            });
+        }
+        
+        function swapAllFields() {
+            const plain = document.getElementById('plainInput');
+            const dfe = document.getElementById('dfeOutput');
+            const temp = plain.value;
+            plain.value = dfe.value;
+            dfe.value = temp;
+            updateCharacterCounts();
+            toast('🔄 Swapped!');
+        }
+        
+        function clearAllFields() {
+            document.getElementById('plainInput').value = '';
+            document.getElementById('dfeOutput').value = '';
+            clearErrors();
+            updateCharacterCounts();
+            toast('🗑 All cleared');
+        }
+        
+        function insertRandomText() {
+            const words = [
+                'ПРИВЕТ', 'HELLO', 'DFE', 'ШИФР', 'CIPHER', 'КОНВЕРТЕР',
+                'CONVERTER', 'АЗБУКА', 'MORSE', 'КОД', 'SECRET', 'ТАЙНА',
+                'ХАХА', 'LOL', 'ЗАШИФРУЙ', 'ENCRYPT', 'ДЕШИФРУЙ', 'DECRYPT'
+            ];
+            const random = words[Math.floor(Math.random() * words.length)];
+            document.getElementById('plainInput').value = random;
+            updateCharacterCounts();
+            toast('🎲 Random: ' + random);
+            performEncode();
+        }
+        
+        function reverseCurrentText() {
+            const field = document.getElementById('plainInput');
+            field.value = field.value.split('').reverse().join('');
+            updateCharacterCounts();
+            toast('↩ Reversed!');
+            performEncode();
+        }
+        
+        function copyFullResult() {
+            const plain = document.getElementById('plainInput').value;
+            const dfe = document.getElementById('dfeOutput').value;
+            const full = 'PLAIN: ' + plain + '\nDFE: ' + dfe;
+            navigator.clipboard.writeText(full).then(() => {
+                toast('📋 Full result copied!');
+            });
+        }
+        
+        function shareResult() {
+            const dfe = document.getElementById('dfeOutput').value;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'DFE! Cipher',
+                    text: dfe
+                }).catch(() => {});
+            } else {
+                copyField('dfeOutput');
+                toast('📤 Copied for sharing!');
+            }
+        }
+        
+        // ============================================================
+        // SECTION 10: TOAST SYSTEM
+        // ============================================================
+        function toast(message, duration = 2500) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('removing');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+        }
+        
+        // ============================================================
+        // SECTION 11: MODAL SYSTEM
+        // ============================================================
+        function showModal(title, contentHtml, buttons = []) {
+            const container = document.getElementById('modalContainer');
+            let buttonsHtml = '';
+            if (buttons.length > 0) {
+                buttonsHtml = '<div class="btn-row" style="margin-top:12px;">' +
+                    buttons.map(btn => {
+                        return '<button class="btn ' + (btn.cls || '') + '" onclick="' + btn.onclick + '">' + btn.text + '</button>';
+                    }).join('') +
+                    '</div>';
+            }
+            
+            container.innerHTML = `
+                <div class="modal-overlay" onclick="if(event.target===this)closeAllModals()">
+                    <div class="modal">
+                        <h2>${title}</h2>
+                        ${contentHtml}
+                        ${buttonsHtml}
+                        <button class="btn" style="margin-top:8px; width:100%;" onclick="closeAllModals()">CLOSE</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function closeAllModals() {
+            document.getElementById('modalContainer').innerHTML = '';
+        }
+        
+        function showLoginModal() {
+            showModal(
+                '👤 LOGIN / REGISTER',
+                `
+                    <p>Enter your credentials to access premium features.</p>
+                    <input id="modalLoginUser" placeholder="Username">
+                    <input id="modalLoginPass" placeholder="Password" type="password">
+                    <p style="font-size:9px; color:var(--text2);">Demo: any username works!</p>
+                `,
+                [
+                    { text: '🔓 LOGIN', cls: 'accent', onclick: 'performFakeLogin()' },
+                    { text: '📝 REGISTER', onclick: 'performFakeRegister()' }
+                ]
+            );
+        }
+        
+        function performFakeLogin() {
+            const username = document.getElementById('modalLoginUser')?.value || 'User';
+            state.user.name = username;
+            state.user.avatar = ['🦊', '🐼', '🐱', '🐶', '🦄', '🐉'][Math.floor(Math.random() * 6)];
+            state.user.balance += Math.floor(Math.random() * 1000000);
+            state.user.coins += Math.floor(Math.random() * 5000);
+            updateUserInterface();
+            saveStateToStorage();
+            closeAllModals();
+            toast('✅ Welcome back, ' + username + '!');
+            if (!state.user.achievements.includes('Returning User')) {
+                state.user.achievements.push('Returning User');
+                toast('🏆 Achievement: Returning User!');
+            }
+        }
+        
+        function performFakeRegister() {
+            const username = document.getElementById('modalLoginUser')?.value || 'NewUser';
+            state.user.name = username;
+            state.user.avatar = '🐣';
+            state.user.balance = 1000000;
+            state.user.coins = 500;
+            state.user.level = 1;
+            state.user.achievements = ['Newcomer'];
+            updateUserInterface();
+            saveStateToStorage();
+            closeAllModals();
+            toast('🎉 Registered! Welcome bonus: 1,000,000$');
+        }
+        
+        function showDonateModal() {
+            showModal(
+                '💝 DONATE TO DFE! PROJECT',
+                `
+                    <p>Support the development of DFE! Ultimate Converter.</p>
+                    <p>Your balance: <b>${state.user.balance.toLocaleString()}$</b></p>
+                    <input id="modalDonateAmt" placeholder="Amount to donate" type="number" min="1" max="${state.user.balance}">
+                `,
+                [
+                    { text: '💝 DONATE 100$', onclick: 'performDonate(100)' },
+                    { text: '💎 DONATE 1,000$', cls: 'accent', onclick: 'performDonate(1000)' },
+                    { text: '🚀 ALL IN!', cls: 'danger', onclick: 'performDonate(' + state.user.balance + ')' }
+                ]
+            );
+        }
+        
+        function performDonate(amount) {
+            const inputAmt = parseInt(document.getElementById('modalDonateAmt')?.value);
+            const finalAmount = inputAmt > 0 ? Math.min(inputAmt, state.user.balance) : Math.min(amount, state.user.balance);
+            
+            if (finalAmount <= 0 || finalAmount > state.user.balance) {
+                toast('❌ Invalid donation amount');
+                return;
+            }
+            
+            state.user.balance -= finalAmount;
+            state.user.coins += Math.floor(finalAmount / 10);
+            updateUserInterface();
+            saveStateToStorage();
+            closeAllModals();
+            toast('💝 Thank you for donating ' + finalAmount.toLocaleString() + '$!');
+            
+            if (!state.user.achievements.includes('Philanthropist')) {
+                state.user.achievements.push('Philanthropist');
+                toast('🏆 Achievement: Philanthropist!');
+            }
+        }
+        
+        function fakeMineCoins() {
+            const mined = Math.floor(Math.random() * 5000) + 100;
+            const bonus = Math.floor(Math.random() * 100000);
+            state.user.coins += mined;
+            state.user.balance += bonus;
+            updateUserInterface();
+            saveStateToStorage();
+            toast('⛏ Mined ' + mined + ' coins + ' + bonus.toLocaleString() + '$!');
+            
+            if (state.user.coins > 1000000 && !state.user.achievements.includes('Crypto Miner')) {
+                state.user.achievements.push('Crypto Miner');
+                toast('🏆 Achievement: Crypto Miner!');
+            }
+        }
+        
+        function showShopModal() {
+            const items = [
+                { name: '🎨 Custom Theme', cost: 5000, icon: '🎨' },
+                { name: '⭐ Premium Badge', cost: 10000, icon: '⭐' },
+                { name: '🦊 Fox Avatar', cost: 3000, icon: '🦊' },
+                { name: '🐉 Dragon Avatar', cost: 15000, icon: '🐉' },
+                { name: '💎 Diamond', cost: 50000, icon: '💎' },
+                { name: '🚀 Rocket Boost', cost: 25000, icon: '🚀' }
+            ];
+            
+            let itemsHtml = '<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">';
+            items.forEach((item, i) => {
+                const owned = state.user.inventory.includes(item.name);
+                itemsHtml += `
+                    <div style="background:var(--bg); padding:8px; border-radius:var(--radius-md); border:1px solid var(--border); text-align:center; font-size:10px;">
+                        <div style="font-size:24px;">${item.icon}</div>
+                        <div>${item.name}</div>
+                        <div style="color:var(--yellow);">${item.cost} 💎</div>
+                        <button class="btn-sm" style="margin-top:4px; ${owned ? 'opacity:0.5;' : ''}" 
+                            onclick="purchaseItem('${item.name}', ${item.cost})"
+                            ${owned ? 'disabled' : ''}>
+                            ${owned ? 'OWNED' : 'BUY'}
+                        </button>
+                    </div>
+                `;
+            });
+            itemsHtml += '</div>';
+            
+            showModal('🛒 SHOP (' + state.user.coins.toLocaleString() + ' 💎)', itemsHtml);
+        }
+        
+        function purchaseItem(name, cost) {
+            if (state.user.coins < cost) {
+                toast('❌ Not enough coins! Need ' + cost + ' 💎');
+                return;
+            }
+            state.user.coins -= cost;
+            state.user.inventory.push(name);
+            updateUserInterface();
+            saveStateToStorage();
+            closeAllModals();
+            showShopModal();
+            toast('✅ Purchased: ' + name + '!');
+        }
+        
+        function showAchievementsModal() {
+            const allAchievements = [
+                { name: 'Newcomer', icon: '👋', desc: 'Register an account' },
+                { name: 'Returning User', icon: '🔄', desc: 'Log in again' },
+                { name: 'Philanthropist', icon: '💝', desc: 'Make a donation' },
+                { name: 'Crypto Miner', icon: '⛏', desc: 'Mine 1,000,000+ coins' },
+                { name: 'Power User', icon: '⚡', desc: '100+ conversions' },
+                { name: 'Night Owl', icon: '🦉', desc: 'Use at midnight' },
+                { name: 'Collector', icon: '🎒', desc: 'Buy 5+ shop items' }
+            ];
+            
+            let html = '<div class="achievement-list">';
+            allAchievements.forEach(ach => {
+                const unlocked = state.user.achievements.includes(ach.name);
+                html += `
+                    <div class="achievement-card ${unlocked ? 'unlocked' : 'locked'}">
+                        <div class="ach-icon">${ach.icon}</div>
+                        <div class="ach-name">${ach.name}</div>
+                        <div style="font-size:8px;">${ach.desc}</div>
+                        <div style="font-size:9px; color:${unlocked ? 'var(--green)' : 'var(--text2)'};">${unlocked ? '✅ UNLOCKED' : '🔒 LOCKED'}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            showModal('🏆 ACHIEVEMENTS (Level ' + state.user.level + ')', html);
+        }
+        
+        function showSettingsModal() {
+            showModal(
+                '⚙️ SETTINGS',
+                `
+                    <p>Auto-convert: <b>${state.settings.autoConvert ? 'ON' : 'OFF'}</b></p>
+                    <p>Animations: <b>${state.settings.animationsEnabled ? 'ON' : 'OFF'}</b></p>
+                    <p>History limit: <b>${state.settings.historyLimit}</b></p>
+                    <p>Theme: <b>${state.theme}</b></p>
+                    <p>Language: <b>${state.lang.toUpperCase()}</b></p>
+                `,
+                [
+                    { text: '🔄 TOGGLE AUTO', onclick: 'toggleSetting("autoConvert")' },
+                    { text: '✨ TOGGLE ANIM', onclick: 'toggleSetting("animationsEnabled")' },
+                    { text: '🌓 TOGGLE THEME', onclick: 'toggleTheme()' },
+                    { text: '🌐 TOGGLE LANG', onclick: 'toggleLanguage()' }
+                ]
+            );
+        }
+        
+        function toggleSetting(setting) {
+            if (setting === 'autoConvert') {
+                state.settings.autoConvert = !state.settings.autoConvert;
+                toast('Auto-convert: ' + (state.settings.autoConvert ? 'ON' : 'OFF'));
+            } else if (setting === 'animationsEnabled') {
+                state.settings.animationsEnabled = !state.settings.animationsEnabled;
+                toast('Animations: ' + (state.settings.animationsEnabled ? 'ON' : 'OFF'));
+            }
+            saveStateToStorage();
+            closeAllModals();
+        }
+        
+        function toggleTheme() {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            applyTheme();
+            saveStateToStorage();
+            toast('🌓 Theme: ' + state.theme);
+        }
+        
+        function toggleLanguage() {
+            state.lang = state.lang === 'en' ? 'ru' : 'en';
+            updateModeBadge();
+            updateLanguageDisplay();
+            saveStateToStorage();
+            toast('🌐 Language: ' + state.lang.toUpperCase());
+        }
+        
+        // ============================================================
+        // SECTION 12: EXPORT / IMPORT
+        // ============================================================
+        function exportAllData() {
+            const exportData = {
+                version: '3.0',
+                timestamp: new Date().toISOString(),
+                dictionaries: {
+                    ruToDfe: ruToDfe,
+                    enToDfe: enToDfe,
+                    digitsToDfe: digitsToDfe,
+                    symbolsToDfe: symbolsToDfe
+                },
+                state: {
+                    history: state.history,
+                    stats: state.stats,
+                    lang: state.lang,
+                    theme: state.theme,
+                    user: state.user,
+                    settings: state.settings
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            downloadFile(blob, 'dfe-full-backup-' + Date.now() + '.json');
+            toast('💾 Full backup exported!');
+        }
+        
+        function importAllData() {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.accept = '.json';
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        
+                        // Restore dictionaries if present
+                        if (data.dictionaries) {
+                            if (data.dictionaries.ruToDfe) Object.assign(ruToDfe, data.dictionaries.ruToDfe);
+                            if (data.dictionaries.enToDfe) Object.assign(enToDfe, data.dictionaries.enToDfe);
+                            if (data.dictionaries.digitsToDfe) digitsToDfe = data.dictionaries.digitsToDfe;
+                            if (data.dictionaries.symbolsToDfe) symbolsToDfe = data.dictionaries.symbolsToDfe;
+                            rebuildAllDictionaries();
+                        }
+                        
+                        // Restore state
+                        if (data.state) {
+                            if (data.state.history) state.history = data.state.history;
+                            if (data.state.stats) state.stats = data.state.stats;
+                            if (data.state.lang) state.lang = data.state.lang;
+                            if (data.state.theme) state.theme = data.state.theme;
+                            if (data.state.user) state.user = data.state.user;
+                            if (data.state.settings) state.settings = data.state.settings;
+                        }
+                        
+                        updateAllUI();
+                        saveStateToStorage();
+                        toast('📥 Full backup imported!');
+                    } catch (ex) {
+                        toast('❌ Invalid backup file');
+                    }
+                };
+                reader.readAsText(file);
+                fileInput.value = '';
+            };
+            fileInput.click();
+        }
+        
+        // ============================================================
+        // SECTION 13: SPECIAL EFFECTS
+        // ============================================================
+        function triggerGlitch() {
+            document.body.classList.add('glitch');
+            setTimeout(() => {
+                document.body.classList.remove('glitch');
+            }, 400);
+            toast('⚡ GLITCH MODE ACTIVATED!');
+        }
+        
+        function triggerFakeCrash() {
+            const originalFilter = document.body.style.filter;
+            document.body.style.filter = 'invert(1) hue-rotate(180deg) saturate(200%)';
+            document.body.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                document.body.style.transition = 'all 1.5s ease';
+                document.body.style.filter = originalFilter;
+                toast('💥 Recovered from fake crash!');
+            }, 1500);
+            
+            toast('💥 SYSTEM CRASH SIMULATION!');
+        }
+        
+        function triggerEasterEgg() {
+            const egg = document.createElement('div');
+            egg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 80px;
+                z-index: 9999;
+                animation: spinAndGrow 2s ease forwards;
+                pointer-events: none;
+            `;
+            egg.textContent = '🥚';
+            document.body.appendChild(egg);
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes spinAndGrow {
+                    0% { transform: translate(-50%, -50%) rotate(0deg) scale(0); opacity: 1; }
+                    50% { transform: translate(-50%, -50%) rotate(360deg) scale(3); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) rotate(720deg) scale(0); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            setTimeout(() => {
+                document.body.removeChild(egg);
+                document.head.removeChild(style);
+            }, 2000);
+            
+            toast('🥚 EASTER EGG FOUND! You discovered a secret!');
+            state.user.coins += 100000;
+            updateUserInterface();
+            saveStateToStorage();
+        }
+        
+        // ============================================================
+        // SECTION 14: KEYBOARD SHORTCUTS
+        // ============================================================
+        function handleKeyboardShortcuts(e) {
+            // Ctrl+Enter = Encode
+            if (e.ctrlKey && e.key === 'Enter' && document.activeElement === document.getElementById('plainInput')) {
+                e.preventDefault();
+                performEncode();
+            }
+            // Ctrl+Shift+Enter = Decode
+            if (e.ctrlKey && e.shiftKey && e.key === 'Enter') {
+                e.preventDefault();
+                performDecode();
+            }
+            // Ctrl+Shift+C = Copy DFE output
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                copyField('dfeOutput');
+            }
+            // Escape = close modals
+            if (e.key === 'Escape') {
+                closeAllModals();
+            }
+        }
+        
+        // ============================================================
+        // SECTION 15: TIMERS
+        // ============================================================
+        function startUptimeTimer() {
+            setInterval(() => {
+                const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                const uptimeStr = minutes > 0 ? minutes + 'm ' + seconds + 's' : seconds + 's';
+                const uptimeEl = document.getElementById('statUptime');
+                if (uptimeEl) uptimeEl.textContent = uptimeStr;
+            }, 1000);
+        }
+        
+        function startSpeedMonitor() {
+            let lastCount = state.stats.totalChars;
+            setInterval(() => {
+                const currentCount = state.stats.totalChars;
+                const speed = currentCount - lastCount;
+                const speedEl = document.getElementById('statSpeed');
+                if (speedEl) speedEl.textContent = speed;
+                lastCount = currentCount;
+            }, 2000);
+        }
+        
+        // ============================================================
+        // SECTION 16: INITIALIZATION
+        // ============================================================
+        initApp();
+        
+        // ============================================================
+        // GLOBAL FUNCTION EXPORTS
+        // ============================================================
+        window.performEncode = performEncode;
+        window.performDecode = performDecode;
+        window.swapAllFields = swapAllFields;
+        window.clearAllFields = clearAllFields;
+        window.insertRandomText = insertRandomText;
+        window.reverseCurrentText = reverseText;
+        window.copyFullResult = copyFullResult;
+        window.shareResult = shareResult;
+        window.copyField = copyField;
+        window.speakField = speakField;
+        window.clearField = clearField;
+        window.pasteField = pasteField;
+        window.bulkConvert = bulkConvert;
+        window.runComparison = runComparison;
+        window.analyzeCipher = analyzeCipher;
+        window.restoreHistoryItem = restoreHistoryItem;
+        window.deleteHistoryItem = deleteHistoryItem;
+        window.copyHistoryItem = copyHistoryItem;
+        window.clearAllHistory = clearAllHistory;
+        window.saveHistoryToFile = saveHistoryToFile;
+        window.loadHistoryFromFile = loadHistoryFromFile;
+        window.exportHistoryAsCSV = exportHistoryAsCSV;
+        window.undoLastConversion = undoLastConversion;
+        window.exportAllData = exportAllData;
+        window.importAllData = importAllData;
+        window.showLoginModal = showLoginModal;
+        window.showDonateModal = showDonateModal;
+        window.showShopModal = showShopModal;
+        window.showAchievementsModal = showAchievementsModal;
+        window.showSettingsModal = showSettingsModal;
+        window.performFakeLogin = performFakeLogin;
+        window.performFakeRegister = performFakeRegister;
+        window.performDonate = performDonate;
+        window.fakeMineCoins = fakeMineCoins;
+        window.purchaseItem = purchaseItem;
+        window.toggleTheme = toggleTheme;
+        window.toggleLanguage = toggleLanguage;
+        window.toggleSetting = toggleSetting;
+        window.closeAllModals = closeAllModals;
+        window.triggerGlitch = triggerGlitch;
+        window.triggerFakeCrash = triggerFakeCrash;
+        window.triggerEasterEgg = triggerEasterEgg;
+        
+        console.log('🚀 DFE! Ultimate Converter v3.0 initialized!');
+        console.log('📚 Dictionaries loaded: ' + Object.keys(allToDfe).length + ' symbols');
+        console.log('👤 User: ' + state.user.name);
+        console.log('💰 Balance: ' + state.user.balance.toLocaleString() + '$');
+        console.log('💡 Tip: Click the logo 5 times for a secret!');
+    </script>
+    <script src="dfe-engine.js"></script>
 </body>
 </html>
