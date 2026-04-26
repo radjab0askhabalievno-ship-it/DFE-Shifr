@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>DFE! Конвертер</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Courier New', monospace; background: #0d1117; color: #c9d1d9; display: flex; justify-content: center; padding: 20px; }
+        .container { max-width: 860px; width: 100%; }
+        h1 { text-align: center; color: #58a6ff; margin-bottom: 4px; font-size: 30px; letter-spacing: 2px; }
+        .subtitle { text-align: center; color: #8b949e; margin-bottom: 20px; font-size: 13px; }
+        .panel { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 18px; margin-bottom: 14px; position: relative; }
+        .panel label { display: block; color: #8b949e; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .panel .copy-btn { position: absolute; top: 14px; right: 14px; background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-family: 'Courier New', monospace; transition: 0.2s; }
+        .panel .copy-btn:hover { background: #30363d; color: #58a6ff; border-color: #58a6ff; }
+        .panel .copy-btn.copied { color: #3fb950; border-color: #3fb950; }
+        textarea { width: 100%; height: 110px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #e6edf3; padding: 12px; font-family: 'Courier New', monospace; font-size: 14px; resize: vertical; outline: none; }
+        textarea:focus { border-color: #58a6ff; }
+        .row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+        .row button { flex: 1; min-width: 120px; padding: 12px; border: 1px solid #30363d; border-radius: 6px; background: #21262d; color: #c9d1d9; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: 'Courier New', monospace; }
+        .row button:hover { background: #30363d; border-color: #58a6ff; color: #58a6ff; }
+        .row button.accent { background: #1f6feb22; border-color: #58a6ff; color: #58a6ff; }
+        .error { color: #f85149; font-size: 12px; margin-top: 6px; min-height: 18px; }
+        .history { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; }
+        .history h3 { color: #8b949e; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+        .history-list { max-height: 180px; overflow-y: auto; }
+        .history-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #21262d; font-size: 12px; gap: 12px; }
+        .history-item:last-child { border-bottom: none; }
+        .history-item .dir { color: #58a6ff; white-space: nowrap; min-width: 30px; font-weight: bold; }
+        .history-item .text { color: #c9d1d9; word-break: break-all; flex: 1; }
+        .history-item .text small { color: #8b949e; }
+        .history-item .use-btn { background: none; border: 1px solid #30363d; color: #8b949e; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 10px; font-family: 'Courier New', monospace; white-space: nowrap; }
+        .history-item .use-btn:hover { border-color: #58a6ff; color: #58a6ff; }
+        .clear-btn { margin-top: 8px; background: #21262d; border: 1px solid #30363d; color: #f85149; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 11px; font-family: 'Courier New', monospace; }
+        .clear-btn:hover { background: #da363322; }
+        .mode-indicator { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; margin-left: 6px; }
+        .mode-indicator.encode { background: #1f6feb22; color: #58a6ff; }
+        .mode-indicator.decode { background: #3fb95022; color: #3fb950; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>⏁ DFE! ⏁</h1>
+    <div class="subtitle">Русский & Английский ↔ DFE! шифр <span id="modeBadge" class="mode-indicator encode">ШИФРОВАНИЕ</span></div>
+
+    <!-- Верхняя панель: обычный текст -->
+    <div class="panel">
+        <label>📥 ОБЫЧНЫЙ ТЕКСТ</label>
+        <button class="copy-btn" id="copyPlain">📋 Копировать</button>
+        <textarea id="plainInput" placeholder="Введи текст на русском или английском..."></textarea>
+        <div class="error" id="plainError"></div>
+    </div>
+
+    <!-- Кнопки -->
+    <div class="row">
+        <button id="btnEncode" class="accent">⬇ ЗАШИФРОВАТЬ</button>
+        <button id="btnDecode">⬆ РАСШИФРОВАТЬ</button>
+        <button id="btnSwap">🔄 ПОМЕНЯТЬ МЕСТАМИ</button>
+        <button id="btnClear">🗑 ОЧИСТИТЬ</button>
+    </div>
+
+    <!-- Нижняя панель: DFE! шифр -->
+    <div class="panel">
+        <label>📤 DFE! ШИФР</label>
+        <button class="copy-btn" id="copyDfe">📋 Копировать</button>
+        <textarea id="dfeOutput" placeholder="DFE! шифр..."></textarea>
+        <div class="error" id="dfeError"></div>
+    </div>
+
+    <!-- История -->
+    <div class="history">
+        <h3>📜 ИСТОРИЯ КОНВЕРТАЦИЙ</h3>
+        <div class="history-list" id="historyList">
+            <div style="color:#484f58; font-size:12px; padding:8px 0;">Пока пусто...</div>
+        </div>
+        <button class="clear-btn" id="clearHistory">🗑 Очистить историю</button>
+    </div>
+</div>
+
+<script>
+    // ==================== СЛОВАРИ DFE! ====================
+    const ruToDfe = {
+        'А':'$r','Б':'&f^','В':'<&g','Г':'$4F','Д':'@rD','Е':'*$r','Ж':'&^:%r','З':'^%$#r','И':'$№f','Й':'&$^r',
+        'К':'^:%r','Л':'&/h','М':'#@Tr','Н':'^%H','О':'%J*','П':'&^YrE','Р':'**&r','С':'$#C','Т':'*(P^','У':'^%f',
+        'Ф':'^:;"&r','Х':'^&^:rG','Ц':'#@%rG','Ч':'$:;rt','Ш':'*I&^','Щ':'*&%^:T','Ъ':'&$;r','Ы':'-*^r','Ь':'%:*r',
+        'Э':'^%&$rG','Ю':'**$&^)rY','Я':'$&^)rY'
+    };
+    const enToDfe = {
+        'A':'**$r','B':'**&f^','C':'**<&g','D':'**$4F','E':'**@rD','F':'***$r','G':'**&^:%r','H':'**^%$#r','I':'**$№f',
+        'J':'**&$^r','K':'**^:%r','L':'**&/h','M':'**#@Tr','N':'**^%H','O':'**%J*','P':'**&^YrE','Q':'****&r','R':'**$#C',
+        'S':'***(P^','T':'**^%f','U':'**^:;"&r','V':'**^&^:rG','W':'**#@%rG','X':'**$:;rt','Y':'***I&^','Z':'***&%^:T'
+    };
+    const digitsToDfe = {};
+    for (let i = 0; i <= 9; i++) digitsToDfe[String(i)] = `-)${i}`;
+    const symbolsToDfe = {
+        ',':'.-','!':'=+-','+':'--._-','?':'-.,-=','"':'_)-:r','_':'%$*@t',"'":'(&(%$r','@':'<^%','.':')_-.',' ':' '
+    };
+    const allToDfe = {...ruToDfe, ...enToDfe, ...digitsToDfe, ...symbolsToDfe};
+    const dfeToChar = {};
+    for (const [char, code] of Object.entries(allToDfe)) dfeToChar[code] = char;
+    const sortedCodes = Object.keys(dfeToChar).sort((a,b) => b.length - a.length);
+
+    // ==================== ЭЛЕМЕНТЫ ====================
+    const plainInput = document.getElementById('plainInput');
+    const dfeOutput = document.getElementById('dfeOutput');
+    const plainError = document.getElementById('plainError');
+    const dfeError = document.getElementById('dfeError');
+    const modeBadge = document.getElementById('modeBadge');
+    const historyList = document.getElementById('historyList');
+
+    let currentMode = 'encode'; // 'encode' | 'decode'
+    let history = [];
+
+    function setMode(mode) {
+        currentMode = mode;
+        if (mode === 'encode') {
+            document.getElementById('btnEncode').classList.add('accent');
+            document.getElementById('btnDecode').classList.remove('accent');
+            modeBadge.textContent = 'ШИФРОВАНИЕ';
+            modeBadge.className = 'mode-indicator encode';
+        } else {
+            document.getElementById('btnDecode').classList.add('accent');
+            document.getElementById('btnEncode').classList.remove('accent');
+            modeBadge.textContent = 'РАСШИФРОВКА';
+            modeBadge.className = 'mode-indicator decode';
+        }
+    }
+
+    // ==================== КОДИРОВАНИЕ / ДЕКОДИРОВАНИЕ ====================
+    function encode(text) {
+        const upper = text.toUpperCase();
+        let result = '';
+        for (const ch of upper) {
+            if (allToDfe[ch] !== undefined) result += allToDfe[ch];
+            else return { error: `Неизвестный символ: "${ch}"` };
+        }
+        return { result };
+    }
+
+    function decode(dfeString) {
+        let remaining = dfeString;
+        let result = '';
+        let failsafe = 0;
+        while (remaining.length > 0 && failsafe < 10000) {
+            failsafe++;
+            let matched = false;
+            for (const code of sortedCodes) {
+                if (remaining.startsWith(code)) {
+                    result += dfeToChar[code];
+                    remaining = remaining.slice(code.length);
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) {
+                const bad = remaining.length > 10 ? remaining.slice(0,10)+'…' : remaining;
+                return { error: `Ошибка возле: "${bad}"` };
+            }
+        }
+        return { result };
+    }
+
+    function performConversion() {
+        plainError.textContent = '';
+        dfeError.textContent = '';
+        if (currentMode === 'encode') {
+            const text = plainInput.value;
+            if (!text.trim()) { plainError.textContent = 'Введи текст для шифрования'; return null; }
+            const res = encode(text);
+            if (res.error) { plainError.textContent = res.error; dfeOutput.value = ''; return null; }
+            dfeOutput.value = res.result;
+            return { dir: '→', from: text, to: res.result };
+        } else {
+            const text = dfeOutput.value;
+            if (!text.trim()) { dfeError.textContent = 'Введи DFE! шифр для расшифровки'; return null; }
+            const res = decode(text);
+            if (res.error) { dfeError.textContent = res.error; plainInput.value = ''; return null; }
+            plainInput.value = res.result;
+            return { dir: '←', from: text, to: res.result };
+        }
+    }
+
+    // ==================== АВТО-КОНВЕРТАЦИЯ НА ЛЕТУ ====================
+    let autoTimer;
+    function autoConvert() {
+        clearTimeout(autoTimer);
+        autoTimer = setTimeout(() => {
+            if (currentMode === 'encode' && plainInput.value.trim()) {
+                performConversionAndAddHistory();
+            } else if (currentMode === 'decode' && dfeOutput.value.trim()) {
+                performConversionAndAddHistory();
+            }
+        }, 400);
+    }
+
+    function performConversionAndAddHistory() {
+        const res = performConversion();
+        if (res) addHistory(res);
+    }
+
+    // ==================== ИСТОРИЯ ====================
+    function addHistory(entry) {
+        // Убираем дубли подряд
+        if (history.length > 0 && history[0].from === entry.from && history[0].to === entry.to) return;
+        history.unshift(entry);
+        if (history.length > 30) history.pop();
+        renderHistory();
+        localStorage.setItem('dfeHistory', JSON.stringify(history));
+    }
+
+    function renderHistory() {
+        if (history.length === 0) {
+            historyList.innerHTML = '<div style="color:#484f58; font-size:12px; padding:8px 0;">Пока пусто...</div>';
+            return;
+        }
+        historyList.innerHTML = history.map((h,i) => `
+            <div class="history-item">
+                <span class="dir">${h.dir}</span>
+                <span class="text"><small>из:</small> ${escapeHtml(h.from.length > 40 ? h.from.slice(0,40)+'…' : h.from)}<br><small>в:</small> ${escapeHtml(h.to.length > 40 ? h.to.slice(0,40)+'…' : h.to)}</span>
+                <button class="use-btn" data-index="${i}">↩</button>
+            </div>
+        `).join('');
+        // Кнопки "использовать"
+        document.querySelectorAll('.use-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(e.target.dataset.index);
+                const entry = history[idx];
+                if (entry.dir === '→') {
+                    plainInput.value = entry.from;
+                    dfeOutput.value = entry.to;
+                } else {
+                    dfeOutput.value = entry.from;
+                    plainInput.value = entry.to;
+                }
+            });
+        });
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function loadHistory() {
+        try {
+            const saved = localStorage.getItem('dfeHistory');
+            if (saved) history = JSON.parse(saved);
+            renderHistory();
+        } catch(e) {}
+    }
+
+    // ==================== КНОПКИ КОПИРОВАНИЯ ====================
+    function copyToClipboard(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = '✅ Скопировано!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = '📋 Копировать';
+                btn.classList.remove('copied');
+            }, 1500);
+        });
+    }
+
+    // ==================== ОБРАБОТЧИКИ ====================
+    document.getElementById('btnEncode').addEventListener('click', () => {
+        setMode('encode');
+        performConversionAndAddHistory();
+    });
+    document.getElementById('btnDecode').addEventListener('click', () => {
+        setMode('decode');
+        performConversionAndAddHistory();
+    });
+    document.getElementById('btnSwap').addEventListener('click', () => {
+        const plain = plainInput.value;
+        const dfe = dfeOutput.value;
+        plainInput.value = dfe;
+        dfeOutput.value = plain;
+        plainError.textContent = '';
+        dfeError.textContent = '';
+    });
+    document.getElementById('btnClear').addEventListener('click', () => {
+        plainInput.value = '';
+        dfeOutput.value = '';
+        plainError.textContent = '';
+        dfeError.textContent = '';
+    });
+    document.getElementById('copyPlain').addEventListener('click', () => copyToClipboard(plainInput.value, document.getElementById('copyPlain')));
+    document.getElementById('copyDfe').addEventListener('click', () => copyToClipboard(dfeOutput.value, document.getElementById('copyDfe')));
+    document.getElementById('clearHistory').addEventListener('click', () => {
+        history = [];
+        localStorage.removeItem('dfeHistory');
+        renderHistory();
+    });
+
+    // Авто-конвертация при вводе
+    plainInput.addEventListener('input', () => {
+        if (currentMode === 'encode') autoConvert();
+    });
+    dfeOutput.addEventListener('input', () => {
+        if (currentMode === 'decode') autoConvert();
+    });
+
+    // Enter
+    plainInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); setMode('encode'); performConversionAndAddHistory(); } });
+    dfeOutput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); setMode('decode'); performConversionAndAddHistory(); } });
+
+    // Загрузка истории
+    loadHistory();
+</script>
+</body>
+</html>
